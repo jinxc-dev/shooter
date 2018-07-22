@@ -10,7 +10,8 @@ cc.Class({
     },
 
     onLoad() {
-        console.log("width:" + this.node.width);
+        // console.log("width:" + this.node.width);
+        cc.director.getPhysicsManager().enabled = true;
     },
 
     start () {

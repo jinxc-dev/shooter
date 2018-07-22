@@ -8,7 +8,20 @@ cc.Class({
         player: {
             default: null,
             type: cc.Node
+        },
+        enemyPrefab: {
+            default: [],
+            type:cc.Prefab
+        },
+        bulletPrefab: {
+            default: null,
+            type:cc.Prefab
+        },
+        circlePrefab: {
+            default: null,
+            type: cc.Prefab
         }
+        
         
     },
 
@@ -20,6 +33,8 @@ cc.Class({
         this.colorStep = cc.color(5, 9, 15);
         this.initCnt = 10;
         this.stairsPath;
+        this.bulletPool = new cc.NodePool('bullet');
+        this.circlePool = new cc.NodePool('circle');
 
     },
 
@@ -27,9 +42,15 @@ cc.Class({
         this.initGame();
 
         // this.node.parent
+        // this.node.parent.on("touchend", function(){
+        //     var p = this.stairsPath[0];
+        //     this.player.getComponent('player').updatePos(p, this.stepH);
+        // }, this);
+
         this.node.parent.on("touchend", function(){
-            var p = this.stairsPath[0];
-            this.player.getComponent('player').updatePos(p, this.stepH);
+            // this.spawnBullet();
+            this.shootedPlayer();
+            // this.spawnCircle(cc.v2(100, 100));
         }, this);
     },
 
@@ -39,6 +60,7 @@ cc.Class({
 
         this.player.x = this.node.width / 2;
         this.player.y = this.stairsPath[0].paths[0].y;
+        this.spawnEnemy();
     },
 
     //. draw map
@@ -148,7 +170,60 @@ cc.Class({
         
         this.stairsPath.push(now);
         this.drawPart(prev, now, this.color);
-    }
+    },
+
+    //. 
+    spawnBullet (angle, pos, normal) {
+        var bullet;
+        bullet = cc.instantiate(this.bulletPrefab);
+        this.node.addChild(bullet);
+
+        bullet.position = pos;
+        var alpha =  angle * Math.PI / 180;
+        
+        var d = 2000;
+        var xx = d * Math.cos(alpha) * normal.x;
+        var yy = d * Math.sin(alpha) * normal.y;
+        var _body = bullet.getComponent(cc.RigidBody);
+        _body.linearVelocity = cc.v2(xx, yy);
+    },
+
+    despawnBullet(bullet) {
+        this.bulletPool.put(bullet);
+
+    },
+
+    //. create enemy
+    spawnEnemy() {
+        var enemy = cc.instantiate(this.enemyPrefab[0]);
+        this.node.addChild(enemy);
+        var info = this.stairsPath[0];
+        var pos = info.paths[info.paths.length - 1];
+        enemy.setScale(info.coff, 1);
+        enemy.x = pos.x + 50 * info.coff;
+        enemy.y = pos.y;
+    },
+
+    shootedPlayer() {
+        var a = this.player.getComponent('player').getAngle();
+        var pos = cc.v2(this.player.x, this.player.y + 40);
+        this.spawnBullet(a, pos, cc.v2(-1, 1));
+
+    },
+
+    spawnCircle(pos) {
+        var obj =cc.instantiate(this.circlePrefab);
+        this.node.addChild(obj);
+        obj.position = pos;
+
+        // var x;
+        var comp = obj.getComponent('circle');
+        comp.initGame(this);
+        comp.play();
+    },
+
+
+
 
 
 

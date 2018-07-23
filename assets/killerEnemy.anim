@@ -1,0 +1,97 @@
+{
+  "__type__": "cc.AnimationClip",
+  "_name": "killerEnemy",
+  "_objFlags": 0,
+  "_rawFiles": null,
+  "_duration": 0.25,
+  "sample": 60,
+  "speed": 1,
+  "wrapMode": 1,
+  "curveData": {
+    "paths": {
+      "sprite": {
+        "props": {
+          "position": [
+            {
+              "frame": 0,
+              "value": [
+                0,
+                0
+              ],
+              "motionPath": []
+            },
+            {
+              "frame": 0.25,
+              "value": [
+                285,
+                -2
+              ],
+              "motionPath": []
+            }
+          ]
+        },
+        "comps": {
+          "cc.Sprite": {
+            "spriteFrame": [
+              {
+                "frame": 0.03333333333333333,
+                "value": {
+                  "__uuid__": "ed7dc3d9-429b-4149-8116-cc50a5688ce4"
+                }
+              },
+              {
+                "frame": 0.1,
+                "value": {
+                  "__uuid__": "221e1ceb-f4e6-4037-a5c4-0a10b1952529"
+                }
+              },
+              {
+                "frame": 0.2,
+                "value": {
+                  "__uuid__": "855c8d93-1cc9-43e0-996b-6b117f385deb"
+                }
+              }
+            ]
+          }
+        }
+      },
+      "gun": {
+        "props": {
+          "rotation": [
+            {
+              "frame": 0,
+              "value": 0
+            },
+            {
+              "frame": 0.25,
+              "value": 179
+            }
+          ],
+          "position": [
+            {
+              "frame": 0,
+              "value": [
+                0,
+                0
+              ]
+            },
+            {
+              "frame": 0.25,
+              "value": [
+                311.6,
+                0
+              ]
+            }
+          ]
+        }
+      }
+    }
+  },
+  "events": [
+    {
+      "frame": 0.25,
+      "func": "hideAnim",
+      "params": []
+    }
+  ]
+}

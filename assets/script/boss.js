@@ -12,41 +12,29 @@ cc.Class({
 
     onCollisionEnter: function (other, self) {
         console.log('Shooter OK');
-
+        
         var pos = other.world.position;
         var node_pos = self.node.getPosition();
-        var p_y = self.node.parent.y;
+        // var p_y = selfCollider.node.parent.y;
 
         var game = this.node.parent.getComponent('bgMap');
         game.spawnCircle(pos);
-        game.removeEnemy(pos);
         // //. not killed
-        // this.updatePos();
-        // game.hasEnemy = true;
+        this.updatePos();
+        game.hasEnemy = true;
         game.shootedOK(pos);
 
-        for (var i = 0; i < this.bonus.length; i++) {
-            var b = this.bonus[i];
-            game.spawnBonus(cc.v2(node_pos.x, node_pos.y + p_y), b);
-        }
+        
+
         other.node.removeFromParent();
-        this.node.removeFromParent();
 
         
 
-        
+        // // // game.removeEnemy(pos);
+        // this.scheduleOnce(function(){
+        //     game.shootedOK(pos);
+        // },2);
 
-        // var pos = otherCollider.node.getPosition();
-        // var node_pos = selfCollider.node.getPosition();
-        // var p_y = selfCollider.node.parent.y;
-
-        // var game = this.node.parent.getComponent('bgMap');
-        // game.spawnCircle(pos);
-        // game.removeEnemy(pos);
-        // game.shootedOK(pos);
-
-        // console.log('YYYY:' + node_pos.y);
-        // console.log('YYYY:' + p_y);
         // for (var i = 0; i < this.bonus.length; i++) {
         //     var b = this.bonus[i];
         //     game.spawnBonus(cc.v2(node_pos.x, node_pos.y + p_y), b);
@@ -65,19 +53,18 @@ cc.Class({
         };
         this.shooterReady = false;
         this.game = null;
-        this.bonus = []; 
-
+        this.bonus = [];
         var files = [
-            'enemy1.png', 'enemy2.png', 'enemy3.png'
+            'boss1.png', 'boss2.png', 'boss3.png'
         ];
-       
         var idx = Math.floor(files.length * cc.random0To1());
-        var texture = cc.textureCache.addImage(cc.url.raw("resources/img/enemy/" + files[idx]));
+        var texture = cc.textureCache.addImage(cc.url.raw("resources/img/boss/" + files[idx]));
         this.node.getComponent(cc.Sprite).spriteFrame = new cc.SpriteFrame(texture);
+   
     },
 
     start () {
-        var b = [1, 1, 1, 1, 1, 2, 1, 1];
+        var b = [0, 0, 1, 0, 1, 2, 0, 0];
         this.stopShooter();
         this.bonus.push(b[Math.floor(b.length * cc.random0To1())]);
     },
@@ -129,13 +116,54 @@ cc.Class({
         this.node.y = pos.y;
         this.node.setScale(info.coff, 1);
 
-        var s1 = cc.moveTo(0.5, pos.x + 50 * info.coff, pos.y);
+        var s1 = cc.jumpTo(0.5, cc.v2(pos.x + 50 * info.coff, pos.y), 50, 1);
         var se = cc.sequence(s1, cc.callFunc(this.endDisplay, this));
         this.node.runAction(se);
     },
+
     endDisplay() {
         this.node.parent.getComponent('bgMap').readyPlayerShoot();
 
     },
+
+    updatePos() {
+        var game = this.node.parent.getComponent('bgMap');
+        
+        this.pathInfo = game.stairsPath[1];
+        this.runStaus = 1;
+        this.step = game.stepH;
+        this.runMove();
+    },
+
+    runMove() {
+        this.stopShooter();
+        var w_runsArray = [];
+        var p = this.pathInfo.paths;
+        var coff = this.pathInfo.coff;
+        var w_t = Math.abs((this.node.x - p[0].x) / this.step) * this.stepTime;
+
+        console.log('time: ' + w_t);
+        
+        w_runsArray.push(cc.moveTo(w_t, p[0]));
+
+        for (var i = 1; i < p.length; i++) {
+            w_runsArray.push(cc.moveTo(this.stepTime, p[i]));
+        }
+        w_runsArray.push(cc.moveBy(this.stepTime, this.step * coff, 0));
+        w_runsArray.push(cc.callFunc(this.endMove, this));
+        var se = cc.sequence(w_runsArray);
+        this.node.runAction(se);
+        
+        this.runStaus = 0;
+
+    },
+    endMove() {
+        this.node.setScale(this.pathInfo.coff, 1);
+        this.node.parent.getComponent('bgMap').readyPlayerShoot();
+        // this.node.runAction(se);
+        // this.node.parent.getComponent('bgMap').upgardMap();
+        
+    },
+
 
 });

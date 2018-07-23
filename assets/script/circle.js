@@ -15,7 +15,7 @@ cc.Class({
         
     },
 
-    initGame(game) {
+    play() {
         var color = [
             cc.color(128, 158, 10),
             cc.color(80, 137, 197),
@@ -25,10 +25,6 @@ cc.Class({
 
         this.node.color = color[c];
         this.node.setScale(this.initScale, this.initScale);
-        this.game = game;
-    },
-
-    play() {
         var z = cc.random0To1() * (1 - 0.8) + 0.8;
         var s1 = cc.scaleTo(.1, z);
         var s2 = cc.fadeOut(0.1);
@@ -38,7 +34,6 @@ cc.Class({
     }, 
 
     stopFunc() {
-        // this.game.despawnCircle(this.node);
         this.node.removeFromParent();
     }
     

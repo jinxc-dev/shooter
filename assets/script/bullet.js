@@ -6,11 +6,14 @@ cc.Class({
 
     },
 
-    onBeginContact: function (contact, selfCollider, otherCollider) {
-        console.log('bullet Shooter');
-        this.despawn();
-    },
-
+    // onBeginContact: function (contact, selfCollider, otherCollider) {
+    //     console.log('bullet Shooter');
+    //     // this.despawn();
+    // },
+    // onCollisionEnd: function (other, self) {
+    //     console.log('Shooter OK');
+    //     this.node.removeFromParent();
+    // },
     onLoad () {
         this.game = null;
     },
@@ -18,6 +21,7 @@ cc.Class({
     update (dt) {
         var x = this.node.x;
         if (x < 0 || x > this.node.parent.width ) {
+            console.log('RE:');
             this.despawn();
         }
     },

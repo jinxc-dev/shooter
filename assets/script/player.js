@@ -9,7 +9,8 @@ cc.Class({
         gun: {
             default: null,
             type: cc.Node
-        }
+        },
+        gunPower: 2
     },
     onLoad () {
         this.runStaus = 0;
@@ -65,9 +66,9 @@ cc.Class({
     },
     endMove() {
         this.node.setScale(this.pathInfo.coff, 1);
+        this.node.parent.getComponent('bgMap').getBonus();
         this.node.parent.getComponent('bgMap').upgardMap();
-
-        this.shooterReady = true;
+        
         
     },
 

@@ -10,29 +10,29 @@
   },
   {
     "__type__": "cc.Node",
-    "_name": "Player",
+    "_name": "boss",
     "_objFlags": 0,
     "_parent": null,
     "_children": [
       {
         "__id__": 2
-      },
-      {
-        "__id__": 5
       }
     ],
     "_tag": -1,
     "_active": true,
     "_components": [
       {
-        "__id__": 8
+        "__id__": 5
       },
       {
-        "__id__": 9
+        "__id__": 6
+      },
+      {
+        "__id__": 7
       }
     ],
     "_prefab": {
-      "__id__": 10
+      "__id__": 8
     },
     "_id": "",
     "_opacity": 255,
@@ -46,13 +46,13 @@
     "_cascadeOpacityEnabled": true,
     "_anchorPoint": {
       "__type__": "cc.Vec2",
-      "x": 0,
+      "x": 0.5,
       "y": 0
     },
     "_contentSize": {
       "__type__": "cc.Size",
       "width": 50,
-      "height": 80
+      "height": 100
     },
     "_rotationX": 0,
     "_rotationY": 0,
@@ -72,7 +72,7 @@
   },
   {
     "__type__": "cc.Node",
-    "_name": "track",
+    "_name": "gun",
     "_objFlags": 0,
     "_parent": {
       "__id__": 1
@@ -100,98 +100,6 @@
     "_cascadeOpacityEnabled": true,
     "_anchorPoint": {
       "__type__": "cc.Vec2",
-      "x": 0,
-      "y": 0
-    },
-    "_contentSize": {
-      "__type__": "cc.Size",
-      "width": 100,
-      "height": 100
-    },
-    "_rotationX": 0,
-    "_rotationY": 0,
-    "_scaleX": -1,
-    "_scaleY": 1,
-    "_position": {
-      "__type__": "cc.Vec2",
-      "x": 0,
-      "y": 36.2
-    },
-    "_skewX": 0,
-    "_skewY": 0,
-    "_localZOrder": 0,
-    "_globalZOrder": 0,
-    "_opacityModifyRGB": false,
-    "groupIndex": 0
-  },
-  {
-    "__type__": "cc.Graphics",
-    "_name": "",
-    "_objFlags": 0,
-    "node": {
-      "__id__": 2
-    },
-    "_enabled": true,
-    "_lineWidth": 1,
-    "_strokeColor": {
-      "__type__": "cc.Color",
-      "r": 0,
-      "g": 0,
-      "b": 0,
-      "a": 255
-    },
-    "_lineJoin": 2,
-    "_lineCap": 0,
-    "_fillColor": {
-      "__type__": "cc.Color",
-      "r": 255,
-      "g": 255,
-      "b": 255,
-      "a": 255
-    },
-    "_miterLimit": 10
-  },
-  {
-    "__type__": "cc.PrefabInfo",
-    "root": {
-      "__id__": 1
-    },
-    "asset": {
-      "__uuid__": "93db9f76-04cc-4204-8eac-9e13a7299c82"
-    },
-    "fileId": "84QinJ1t5Dyasjn9InCcyQ",
-    "sync": false
-  },
-  {
-    "__type__": "cc.Node",
-    "_name": "gun",
-    "_objFlags": 0,
-    "_parent": {
-      "__id__": 1
-    },
-    "_children": [],
-    "_tag": -1,
-    "_active": true,
-    "_components": [
-      {
-        "__id__": 6
-      }
-    ],
-    "_prefab": {
-      "__id__": 7
-    },
-    "_id": "",
-    "_opacity": 255,
-    "_color": {
-      "__type__": "cc.Color",
-      "r": 255,
-      "g": 255,
-      "b": 255,
-      "a": 255
-    },
-    "_cascadeOpacityEnabled": true,
-    "_anchorPoint": {
-      "__type__": "cc.Vec2",
       "x": 0.5,
       "y": 1
     },
@@ -206,7 +114,7 @@
     "_scaleY": 1,
     "_position": {
       "__type__": "cc.Vec2",
-      "x": 0,
+      "x": -17.6,
       "y": 45
     },
     "_skewX": 0,
@@ -221,7 +129,7 @@
     "_name": "",
     "_objFlags": 0,
     "node": {
-      "__id__": 5
+      "__id__": 2
     },
     "_enabled": true,
     "_spriteFrame": {
@@ -248,7 +156,7 @@
       "__id__": 1
     },
     "asset": {
-      "__uuid__": "93db9f76-04cc-4204-8eac-9e13a7299c82"
+      "__uuid__": "e1644826-1172-4562-b68f-39d57f6feb64"
     },
     "fileId": "abhT1jEXxPSJsR+Th8IePK",
     "sync": false
@@ -261,9 +169,7 @@
       "__id__": 1
     },
     "_enabled": true,
-    "_spriteFrame": {
-      "__uuid__": "38374b98-61df-4335-8de8-c7bdf9c358dc"
-    },
+    "_spriteFrame": null,
     "_type": 0,
     "_sizeMode": 0,
     "_fillType": 0,
@@ -280,20 +186,38 @@
     "_atlas": null
   },
   {
-    "__type__": "08c3fAy1Z5Oo7yqynrTZr1g",
+    "__type__": "fad57Tuc2BFm6gWg4PQ01J8",
     "_name": "",
     "_objFlags": 0,
     "node": {
       "__id__": 1
     },
     "_enabled": true,
-    "track": {
-      "__id__": 3
-    },
     "gun": {
-      "__id__": 5
+      "__id__": 2
     },
-    "gunPower": 2
+    "correct": 1,
+    "health": 2
+  },
+  {
+    "__type__": "cc.BoxCollider",
+    "_name": "",
+    "_objFlags": 0,
+    "node": {
+      "__id__": 1
+    },
+    "_enabled": true,
+    "tag": 0,
+    "_offset": {
+      "__type__": "cc.Vec2",
+      "x": 0,
+      "y": 50
+    },
+    "_size": {
+      "__type__": "cc.Size",
+      "width": 50,
+      "height": 100
+    }
   },
   {
     "__type__": "cc.PrefabInfo",
@@ -301,7 +225,7 @@
       "__id__": 1
     },
     "asset": {
-      "__uuid__": "93db9f76-04cc-4204-8eac-9e13a7299c82"
+      "__uuid__": "e1644826-1172-4562-b68f-39d57f6feb64"
     },
     "fileId": "67EvRlMANAbZ5Qq/zgylke",
     "sync": false

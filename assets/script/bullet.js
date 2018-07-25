@@ -16,18 +16,24 @@ cc.Class({
     // },
     onLoad () {
         this.game = null;
+        
     },
+
 
     update (dt) {
         var x = this.node.x;
-        if (x < 0 || x > this.node.parent.width ) {
-            console.log('RE:');
+        var boxs = this.node.getBoundingBoxToWorld();
+        if (boxs.x < 0 || boxs.x > 640 ) {
             this.despawn();
         }
     },
 
     despawn() {
         this.node.removeFromParent();
+    },
+
+    getWorldPos() {
+        
     }
 
 });

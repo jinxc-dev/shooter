@@ -9,23 +9,28 @@ cc.Class({
     },
 
     onLoad() {
-        
+        // this.type = 'enemy';
     },
     start() {
         
     },
 
-    init (game) {
+    init (game, type) {
         this.game = game;
+        this.type = type;
         this.anim.getComponent('animKilled').init(this);
     },
 
     play () {
-        this.anim.play('killerEnemy');
+        if (this.type == 'enemy') {
+            this.anim.play('killerEnemy');
+        } else if (this.type == 'player') {
+            this.anim.play('killerPlayer');
+        }
     },
 
     despawn () {
-        this.game.despawnKilledEnemy(this.node);
+        this.game.despawnKilledAnim(this.node, this.type);
     },
 
 

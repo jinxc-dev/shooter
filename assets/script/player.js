@@ -6,11 +6,33 @@ cc.Class({
             default: null,
             type: cc.Graphics
         },
-        gun: {
+
+        gunPrefab : {
+            default: [],
+            type: cc.Prefab
+        },
+        bulletPrefab: {
             default: null,
-            type: cc.Node
+            type:cc.Prefab
         },
         gunPower: 2
+    },
+
+    onCollisionEnter: function (other, self) {
+        console.log('Player OK');
+
+        var pos = other.world.position;
+        var node_pos = self.node.getPosition();
+        var p_y = self.node.parent.y;
+
+        other.node.removeFromParent();
+        var game = this.node.parent.getComponent('bgMap');
+        if (game.readyShooter) {
+            game.removeAnim(pos, 'player');
+
+        }
+
+        // this.node.removeFromParent();
     },
     onLoad () {
         this.runStaus = 0;
@@ -28,6 +50,7 @@ cc.Class({
     },
 
     start () {
+        this.setGun(0);
     },
 
     update (dt) {
@@ -74,7 +97,7 @@ cc.Class({
 
     drawShooter(dt) {
         this.R.delta += dt;
-        if (this.R.delta < 0.05) {
+        if (this.R.delta < 0.07) {
             return;
         }
 
@@ -93,8 +116,9 @@ cc.Class({
 
     drawStrack() {
        
-        var r = this.gun.width / 2 + this.R.rr;        
+        var r = this.gun.width / 2 + this.aimLen;        
         var a = this.calcAlpha(this.R.alpha);
+        this.gun.getComponent('gun').setAngle(a);
         var g = this.track;
 
         if (a < 0)
@@ -133,5 +157,17 @@ cc.Class({
 
     getAngle() {
         return this.R.alpha;
+    },
+
+    setGun(n) {
+        this.gun = cc.instantiate(this.gunPrefab[n]);
+        this.node.addChild(this.gun);
+        this.gun.position = cc.v2(0, this.track.node.y);
+        this.aimLen = this.gun.getComponent('gun').aimLen;
+    },
+
+    startShoot() {
+        this.gun.getComponent('gun').startShoot();
     }
+
 });

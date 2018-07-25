@@ -2,9 +2,10 @@ cc.Class({
     extends: cc.Component,
 
     properties: {
-        gun: {
+
+        gunPrefab : {
             default: null,
-            type: cc.Node
+            type: cc.Prefab
         },
         correct: 1,
         health: 2
@@ -17,41 +18,18 @@ cc.Class({
         var node_pos = self.node.getPosition();
         var p_y = self.node.parent.y;
 
+        other.node.removeFromParent();
         var game = this.node.parent.getComponent('bgMap');
         game.spawnCircle(pos);
-        game.removeEnemy(pos);
-        // //. not killed
-        // this.updatePos();
-        // game.hasEnemy = true;
-        game.shootedOK(pos);
+        game.removeAnim(pos, 'enemy');
+        game.enemyHitedOK();
 
         for (var i = 0; i < this.bonus.length; i++) {
             var b = this.bonus[i];
             game.spawnBonus(cc.v2(node_pos.x, node_pos.y + p_y), b);
         }
-        other.node.removeFromParent();
+
         this.node.removeFromParent();
-
-        
-
-        
-
-        // var pos = otherCollider.node.getPosition();
-        // var node_pos = selfCollider.node.getPosition();
-        // var p_y = selfCollider.node.parent.y;
-
-        // var game = this.node.parent.getComponent('bgMap');
-        // game.spawnCircle(pos);
-        // game.removeEnemy(pos);
-        // game.shootedOK(pos);
-
-        // console.log('YYYY:' + node_pos.y);
-        // console.log('YYYY:' + p_y);
-        // for (var i = 0; i < this.bonus.length; i++) {
-        //     var b = this.bonus[i];
-        //     game.spawnBonus(cc.v2(node_pos.x, node_pos.y + p_y), b);
-        // }
-        // this.node.removeFromParent();
     },
 
     onLoad () {
@@ -74,12 +52,15 @@ cc.Class({
         var idx = Math.floor(files.length * cc.random0To1());
         var texture = cc.textureCache.addImage(cc.url.raw("resources/img/enemy/" + files[idx]));
         this.node.getComponent(cc.Sprite).spriteFrame = new cc.SpriteFrame(texture);
+        this.gun;
+        this.setGun();
     },
 
     start () {
         var b = [1, 1, 1, 1, 1, 2, 1, 1];
         this.stopShooter();
         this.bonus.push(b[Math.floor(b.length * cc.random0To1())]);
+        this.targetAngle = 0;
     },
 
     update (dt) {
@@ -103,6 +84,14 @@ cc.Class({
         var a = this.R.alpha * this.correct * -1;
         this.gun.setRotation(a);
         this.R.delta = 0;
+
+        var alpha = this.calcAlpha(this.R.alpha);
+
+        if (alpha > this.targetAngle - 0.03 && alpha < this.targetAngle + 0.03) {
+            this.gun.getComponent('gun').setAngle(this.calcAlpha(a));
+            this.gun.getComponent('gun').startShoot();
+            this.shooterReady = false;
+        }
 
     },
 
@@ -137,5 +126,23 @@ cc.Class({
         this.node.parent.getComponent('bgMap').readyPlayerShoot();
 
     },
+
+    readyShooter(playPos) {
+        var vect = cc.pSub(playPos, this.node.position);
+        var angle = cc.pToAngle(cc.pCompOp(vect, Math.abs));
+        this.targetAngle = angle;
+        this.shooterReady = true;
+    },
+    updatePos() {
+
+    },
+
+    setGun() {
+        this.gun = cc.instantiate(this.gunPrefab);
+        this.node.addChild(this.gun);
+        this.gun.position = cc.v2(-30, 40);
+    },
+
+    
 
 });

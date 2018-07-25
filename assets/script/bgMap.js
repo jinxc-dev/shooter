@@ -26,7 +26,7 @@ cc.Class({
             type: cc.Prefab
         },
         killedAnim: {
-            default: null,
+            default: [],
             type: cc.Prefab
         },
         readyShooter: false,
@@ -73,30 +73,42 @@ cc.Class({
         this.bonus=[];
         this.enemyCnt = 0;
         this.hasEnemy = false;
+        this.readyEnemy =false;
 
         this.killedEnemyPool = new cc.NodePool('killedEnemy');
-
+        this.killedPlayerPool = new cc.NodePool('killedPlayer');
+        this.enemyHited = false;
+        this.enemyComp = null;
     },
 
     start () {
         this.initGame();
-
-        // this.node.parent
-        // this.node.parent.on("touchend", function(){
-        //     var p = this.stairsPath[0];
-        //     this.player.getComponent('player').updatePos(p, this.stepH);
-        // }, this);
-
         this.node.parent.on("touchend", function(){
-            // this.spawnBullet();
             if (this.readyShooter) {
                 this.shootedPlayer();
-                // this.readyShooter = false;
-                // this.player.getComponent('player').stopShooter();
+                this.readyShooter = false;
             }
-            
-            // this.removeEnemy(cc.v2(100, 100));
-            // this.spawnCircle(cc.v2(100, 100));
+        }, this);
+
+        this.node.on("end_shooter", function(){
+            if (this.enemyHited) {
+                if (this.hasEnemy) {
+                    this.enemyComp.updatePos();
+                }
+                this.playerNextStep();
+
+            } else {
+                if (!this.readyShooter) {
+                    this.enemyComp.readyShooter(this.player.position);
+                    this.player.getComponent('player').stopShooter();
+                    this.readyEnemy = true;
+                    this.readyShooter = true;
+                } else {
+                    this.enemyComp.stopShooter();
+                    this.player.getComponent('player').shooterReady = true;
+                    this.readyEnemy = false;
+                }
+            }
         }, this);
     },
 
@@ -227,6 +239,7 @@ cc.Class({
         
         _body.linearVelocity = cc.v2(xx, yy);
         _body.active = true;
+        return bullet;
     },
 
     despawnBullet(bullet) {
@@ -238,7 +251,8 @@ cc.Class({
     spawnEnemy() {
         var enemy;
         var comp;
-        if (this.enemyCnt < 6) {
+        this.enemyComp = null;
+        if (this.enemyCnt < 2) {
             enemy = cc.instantiate(this.enemyPrefab);
             comp = 'enemy';
 
@@ -249,16 +263,15 @@ cc.Class({
         this.node.addChild(enemy);
         enemy.getComponent(comp).display(this.stairsPath[0]);
         this.enemyCnt ++;
+        this.readyEnemy = false;
+
+        this.enemyComp =  enemy.getComponent(comp);
+        this.enemyComp.correct = 1;
     },
 
     shootedPlayer() {
-        var a = this.player.getComponent('player').getAngle();
-        var pos = cc.v2(this.player.x, this.player.y + 40);
-        var coff = 1;
-        if (pos.x >= this.node.width / 2) {
-            coff = -1;
-        }
-        this.spawnBullet(a, pos, cc.v2(coff, 1));
+        this.player.getComponent('player').startShoot();
+        // this.readyEnemy = true;
     },
 
     spawnCircle(pos) {
@@ -271,45 +284,72 @@ cc.Class({
         comp.play();
     },
 
-    removeEnemy: function (pos) {
+    removeAnim: function (pos, type) {
         var coff = 1;
         if (pos.x < this.node.width / 2) {
             coff = -1;
         }
-        var anim = this.spawnKilledEnemy();
+        var anim = this.spawnKilledAnim(type);
         this.node.parent.addChild(anim.node);
         anim.node.setPosition(pos);
         anim.node.setScale(coff, 1);
         anim.play();
     },
 
-    spawnKilledEnemy: function () {
+    spawnKilledAnim: function (type) {
         var fx;
-        if (this.killedEnemyPool.size() > 0) {
-            fx = this.killedEnemyPool.get();
-            return fx.getComponent('killed');
-        } else {
-            fx = cc.instantiate(this.killedAnim).getComponent('killed');
-            fx.init(this);
-            return fx;
+        if (type == 'enemy') {
+            if (this.killedEnemyPool.size() > 0) {
+                fx = this.killedEnemyPool.get();
+                return fx.getComponent('killed');
+            } else {
+                fx = cc.instantiate(this.killedAnim[0]).getComponent('killed');
+                fx.init(this, type);
+                return fx;
+            }
+        } else if (type == 'player') {
+            if (this.killedPlayerPool.size() > 0) {
+                fx = this.killedPlayerPool.get();
+                return fx.getComponent('killed');
+            } else {
+                fx = cc.instantiate(this.killedAnim[1]).getComponent('killed');
+                fx.init(this, type);
+                return fx;
+            }            
         }
     },
-    despawnKilledEnemy (anim) {
-        console.log('Anim');
-        this.killedEnemyPool.put(anim);
+    despawnKilledAnim (anim, type) {
+        if (type == 'enemy') {
+            console.log('Anim');
+            this.killedEnemyPool.put(anim);
+        } else if (type == 'player') {
+            this.killedPlayerPool.put(anim);
+        }
     },
 
+
     // ********************** Recycle ********************************
-    shootedOK() {
+    enemyHitedOK() {
+        this.enemyHited = true;
+    },
+
+    playerNextStep() {
         var play = this.player.getComponent('player');
         var p = this.stairsPath[0];
         play.updatePos(p, this.stepH);
         this.createPhyCollider(this.stairsPath[1]);
+        this.readyEnemy = false;
     },
 
     readyPlayerShoot() {
         this.readyShooter = true;
+        this.enemyHited = false;
         this.player.getComponent('player').shooterReady = true;
+    },
+
+    readyEnemyShoot() {
+        this.readyShooter = false;
+        
     },
 
     upgardMap() {
@@ -321,7 +361,7 @@ cc.Class({
         this.addMap();
         if (!this.hasEnemy) {
             this.spawnEnemy();
-        }
+        } 
     },
 
     spawnBonus: function (pos, type) {

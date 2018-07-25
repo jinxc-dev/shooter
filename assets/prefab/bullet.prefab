@@ -139,10 +139,10 @@
     },
     "_enabled": true,
     "tag": 0,
-    "_density": 2,
+    "_density": 10.2,
     "_sensor": false,
-    "_friction": 0.5,
-    "_restitution": 0.5,
+    "_friction": 0.1,
+    "_restitution": 0.01,
     "body": null,
     "_offset": {
       "__type__": "cc.Vec2",

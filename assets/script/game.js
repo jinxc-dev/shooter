@@ -15,7 +15,7 @@ cc.Class({
         cc.director.getPhysicsManager().debugDrawFlags =
 cc.PhysicsManager.DrawBits.e_jointBit |
 cc.PhysicsManager.DrawBits.e_shapeBit;
-        cc.director.getPhysicsManager().gravity = cc.v2 (0, -320);
+        // cc.director.getPhysicsManager().gravity = cc.v2 (0, -320);
         cc.director.getCollisionManager().enabled = true;
     },
 

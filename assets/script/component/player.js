@@ -15,7 +15,6 @@ cc.Class({
             default: null,
             type:cc.Prefab
         },
-        gunPower: 2
     },
 
     onCollisionEnter: function (other, self) {
@@ -26,11 +25,11 @@ cc.Class({
         var p_y = self.node.parent.y;
 
         other.node.removeFromParent();
-        var game = this.node.parent.getComponent('bgMap');
-        if (game.readyShooter) {
-            game.removeAnim(pos, 'player');
-
+        if (this.game.readyShooter) {
+            this.game.deadLife();
+            this.game.removeAnim(pos, 'player');
         }
+        return;
 
         // this.node.removeFromParent();
     },
@@ -47,10 +46,16 @@ cc.Class({
             rr: 30
         };
         this.shooterReady = true;
+        this.game;
+        this.gunNum = 0;
+        this.gun = null;
+        // this.newGunNum = 0;
     },
 
     start () {
-        this.setGun(0);
+        this.game = this.node.parent.getComponent('bgMap');
+        this.setGun(this.gunNum);
+        
     },
 
     update (dt) {
@@ -88,11 +93,16 @@ cc.Class({
 
     },
     endMove() {
-        this.node.setScale(this.pathInfo.coff, 1);
-        this.node.parent.getComponent('bgMap').getBonus();
-        this.node.parent.getComponent('bgMap').upgardMap();
-        
-        
+        // this.node.setScale(this.pathInfo.coff, 1);
+        this.game.getBonus();
+        this.game.upgardeEnemyHealth();
+
+        if (this.game.deadBoss) {
+            this.runMoveEnd();
+        } else {
+            this.node.setScale(this.pathInfo.coff, 1);
+            this.game.upgardMap();
+        }
     },
 
     drawShooter(dt) {
@@ -160,6 +170,11 @@ cc.Class({
     },
 
     setGun(n) {
+        if (this.gun != null) {
+            this.gun.removeFromParent();
+            this.gun = null;
+        }
+
         this.gun = cc.instantiate(this.gunPrefab[n]);
         this.node.addChild(this.gun);
         this.gun.position = cc.v2(0, this.track.node.y);
@@ -167,7 +182,24 @@ cc.Class({
     },
 
     startShoot() {
+        this.shooterReady = false;
+        this.track.clear();
         this.gun.getComponent('gun').startShoot();
+    },
+
+    runMoveEnd() {
+        this.stopShooter();
+        var p = this.pathInfo.paths;
+        var coff = this.pathInfo.coff;
+        var xx = (coff + 1) * this.game.node.width - p[p.length - 1].x;
+        var s1 = cc.moveBy(1, xx, 0);
+
+        var endF = cc.callFunc(this.endMoveEnd, this);
+        var se = cc.sequence(s1, endF);
+        this.node.runAction(se);
+    },
+    endMoveEnd() {
+        this.game.updateGameLevel();
     }
 
 });

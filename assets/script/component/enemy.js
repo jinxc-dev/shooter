@@ -8,7 +8,6 @@ cc.Class({
             type: cc.Prefab
         },
         correct: 1,
-        health: 2
     },
 
     onCollisionEnter: function (other, self) {
@@ -17,11 +16,22 @@ cc.Class({
         var pos = other.world.position;
         var node_pos = self.node.getPosition();
         var p_y = self.node.parent.y;
+        var hh = other.world.preAabb.y - self.world.preAabb.y;
+        var b_head = false;
+        var gun_power = other.node.parent.getComponent('gun').power;
+        var game = this.node.parent.getComponent('bgMap');
+        //. head shoot
+        if (hh > this.node.height / 3) {
+            b_head = true;
+            gun_power *= 2;
+        }
 
         other.node.removeFromParent();
-        var game = this.node.parent.getComponent('bgMap');
-        game.spawnCircle(pos);
+        
+        game.spawnCircle(pos, gun_power);
+        game.updateScore(b_head);
         game.removeAnim(pos, 'enemy');
+
         game.enemyHitedOK();
 
         for (var i = 0; i < this.bonus.length; i++) {
@@ -57,7 +67,8 @@ cc.Class({
     },
 
     start () {
-        var b = [1, 1, 1, 1, 1, 2, 1, 1];
+        // var b = [1, 1, 1, 1, 1, 2, 1, 1];
+        var b = [2, 2, 2, 2, 2, 2, 2, 2];
         this.stopShooter();
         this.bonus.push(b[Math.floor(b.length * cc.random0To1())]);
         this.targetAngle = 0;
@@ -142,6 +153,10 @@ cc.Class({
         this.node.addChild(this.gun);
         this.gun.position = cc.v2(-30, 40);
     },
+
+    setHealth(n) {
+        return;
+    }
 
     
 

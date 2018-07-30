@@ -16,23 +16,26 @@
     "_children": [
       {
         "__id__": 2
-      },
-      {
-        "__id__": 5
       }
     ],
     "_tag": -1,
     "_active": true,
     "_components": [
       {
-        "__id__": 8
+        "__id__": 5
       },
       {
-        "__id__": 9
+        "__id__": 6
+      },
+      {
+        "__id__": 7
+      },
+      {
+        "__id__": 8
       }
     ],
     "_prefab": {
-      "__id__": 10
+      "__id__": 9
     },
     "_id": "",
     "_opacity": 255,
@@ -68,7 +71,7 @@
     "_localZOrder": 0,
     "_globalZOrder": 0,
     "_opacityModifyRGB": false,
-    "groupIndex": 0
+    "groupIndex": 2
   },
   {
     "__type__": "cc.Node",
@@ -115,7 +118,7 @@
     "_position": {
       "__type__": "cc.Vec2",
       "x": 0,
-      "y": 36.2
+      "y": 40
     },
     "_skewX": 0,
     "_skewY": 0,
@@ -157,100 +160,9 @@
       "__id__": 1
     },
     "asset": {
-      "__uuid__": "93db9f76-04cc-4204-8eac-9e13a7299c82"
+      "__id__": 0
     },
     "fileId": "84QinJ1t5Dyasjn9InCcyQ",
-    "sync": false
-  },
-  {
-    "__type__": "cc.Node",
-    "_name": "gun",
-    "_objFlags": 0,
-    "_parent": {
-      "__id__": 1
-    },
-    "_children": [],
-    "_tag": -1,
-    "_active": true,
-    "_components": [
-      {
-        "__id__": 6
-      }
-    ],
-    "_prefab": {
-      "__id__": 7
-    },
-    "_id": "",
-    "_opacity": 255,
-    "_color": {
-      "__type__": "cc.Color",
-      "r": 255,
-      "g": 255,
-      "b": 255,
-      "a": 255
-    },
-    "_cascadeOpacityEnabled": true,
-    "_anchorPoint": {
-      "__type__": "cc.Vec2",
-      "x": 0.5,
-      "y": 1
-    },
-    "_contentSize": {
-      "__type__": "cc.Size",
-      "width": 60,
-      "height": 40
-    },
-    "_rotationX": 0,
-    "_rotationY": 0,
-    "_scaleX": 1,
-    "_scaleY": 1,
-    "_position": {
-      "__type__": "cc.Vec2",
-      "x": 0,
-      "y": 45
-    },
-    "_skewX": 0,
-    "_skewY": 0,
-    "_localZOrder": 0,
-    "_globalZOrder": 0,
-    "_opacityModifyRGB": false,
-    "groupIndex": 0
-  },
-  {
-    "__type__": "cc.Sprite",
-    "_name": "",
-    "_objFlags": 0,
-    "node": {
-      "__id__": 5
-    },
-    "_enabled": true,
-    "_spriteFrame": {
-      "__uuid__": "84cc5a6d-8b27-465d-8bfe-9fa92f49c4bc"
-    },
-    "_type": 0,
-    "_sizeMode": 0,
-    "_fillType": 0,
-    "_fillCenter": {
-      "__type__": "cc.Vec2",
-      "x": 0,
-      "y": 0
-    },
-    "_fillStart": 0,
-    "_fillRange": 0,
-    "_isTrimmedMode": true,
-    "_srcBlendFactor": 770,
-    "_dstBlendFactor": 771,
-    "_atlas": null
-  },
-  {
-    "__type__": "cc.PrefabInfo",
-    "root": {
-      "__id__": 1
-    },
-    "asset": {
-      "__uuid__": "93db9f76-04cc-4204-8eac-9e13a7299c82"
-    },
-    "fileId": "abhT1jEXxPSJsR+Th8IePK",
     "sync": false
   },
   {
@@ -290,10 +202,72 @@
     "track": {
       "__id__": 3
     },
-    "gun": {
-      "__id__": 5
+    "gunPrefab": [
+      {
+        "__uuid__": "7f2abbcb-7112-436e-b23f-98f892c148cc"
+      },
+      {
+        "__uuid__": "4864b381-7ee0-4361-8322-28b270f5e9d7"
+      },
+      {
+        "__uuid__": "3a05282c-7cd9-4b7f-b0ae-5c20ef0da07a"
+      },
+      {
+        "__uuid__": "b96992ee-8b39-4c87-8df3-a998ef12bd50"
+      },
+      {
+        "__uuid__": "62b0972a-ea32-498d-afa5-5d69174eae60"
+      },
+      {
+        "__uuid__": "e635a2da-dceb-4295-b71d-4c3c52c63b58"
+      },
+      {
+        "__uuid__": "56290d68-fed0-4f9d-b7c9-bc40222acc18"
+      }
+    ],
+    "bulletPrefab": {
+      "__uuid__": "cdd83852-2563-4984-bedf-a62440724fc6"
+    }
+  },
+  {
+    "__type__": "cc.BoxCollider",
+    "_name": "",
+    "_objFlags": 0,
+    "node": {
+      "__id__": 1
     },
-    "gunPower": 2
+    "_enabled": true,
+    "tag": 0,
+    "_offset": {
+      "__type__": "cc.Vec2",
+      "x": 25,
+      "y": 40
+    },
+    "_size": {
+      "__type__": "cc.Size",
+      "width": 50,
+      "height": 80
+    }
+  },
+  {
+    "__type__": "cc.BoxCollider",
+    "_name": "",
+    "_objFlags": 0,
+    "node": {
+      "__id__": 1
+    },
+    "_enabled": true,
+    "tag": 0,
+    "_offset": {
+      "__type__": "cc.Vec2",
+      "x": 25,
+      "y": 40
+    },
+    "_size": {
+      "__type__": "cc.Size",
+      "width": 50,
+      "height": 80
+    }
   },
   {
     "__type__": "cc.PrefabInfo",
@@ -301,7 +275,7 @@
       "__id__": 1
     },
     "asset": {
-      "__uuid__": "93db9f76-04cc-4204-8eac-9e13a7299c82"
+      "__id__": 0
     },
     "fileId": "67EvRlMANAbZ5Qq/zgylke",
     "sync": false

@@ -97,11 +97,12 @@
       "__id__": 1
     },
     "_enabled": true,
-    "bulletBuff": 1,
+    "bulletBuff": 5,
     "bulletPrefab": {
       "__uuid__": "cdd83852-2563-4984-bedf-a62440724fc6"
     },
-    "aimLen": 40
+    "aimLen": 40,
+    "power": 3
   },
   {
     "__type__": "cc.PrefabInfo",

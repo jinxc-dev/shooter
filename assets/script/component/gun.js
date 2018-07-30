@@ -9,10 +9,14 @@ cc.Class({
             type: cc.Prefab
         },
         aimLen: 20,
+        power: 3
         // dealyT : 0.5
     },
 
-
+    onLoad() {
+        this.deltaX = 0;
+        this.deltaY = 0;
+    },
     start () {
         this.dealyTime = 0;
         this.angle = 0;
@@ -47,6 +51,7 @@ cc.Class({
         
         _body.linearVelocity = cc.v2(xx, yy);
         _body.active = true;
+        this.runShock();
         return bullet;
     },
 
@@ -70,7 +75,6 @@ cc.Class({
         console.log('SSSSSS:' + this.bulletBuff);
         this.readyStatus = true;
         this.bulletCnt = this.bulletBuff;
-        
     },
 
     sendEndStatus() {
@@ -78,6 +82,14 @@ cc.Class({
             var event = new cc.Event.EventCustom("end_shooter", true);
             this.node.dispatchEvent(event);
         }, 0.5);
-    }
+    },
+
+    runShock() {
+        var s1 = cc.moveBy(0.05, 5, 0);
+        var s2 = cc.moveBy(0.05, -5, 0);
+
+        var se = cc.sequence(s1, s2);
+        this.node.runAction(se);
+    },
 
 });

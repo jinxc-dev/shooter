@@ -16,15 +16,34 @@ cc.Class({
         var pos = other.world.position;
         var node_pos = self.node.getPosition();
         // var p_y = selfCollider.node.parent.y;
-
+        var hh = other.world.preAabb.y - self.world.preAabb.y;
         var game = this.node.parent.getComponent('bgMap');
-        game.spawnCircle(pos);
+        var gun_power = other.node.parent.getComponent('gun').power;
+        var b_head = false;
+        if (hh > this.node.height / 3) {
+            b_head = true;
+            gun_power *= 2;
+        }
+
+        
+        game.spawnCircle(pos, gun_power);
 
         other.node.removeFromParent();
-        // //. not killed
-        // this.updatePos();
-        game.hasEnemy = true;
-        game.enemyHitedOK();
+        game.updateScore(b_head);
+
+        this.health -= gun_power;
+        game.upgardeBossHealth(this.initHealth, this.health);
+        if (this.health > 0) {
+            game.hasEnemy = true;
+            game.enemyHitedOK();
+        } else {
+            game.hasEnemy = false;
+            game.deadBoss = true;
+            game.removeAnim(pos, 'enemy');
+            game.enemyHitedOK();
+            this.node.removeFromParent(); 
+        }
+
 
     },
 
@@ -48,6 +67,7 @@ cc.Class({
         this.node.getComponent(cc.Sprite).spriteFrame = new cc.SpriteFrame(texture);
         this.gun;
         this.setGun();
+        this.initHealth = 0;
    
     },
 
@@ -169,6 +189,11 @@ cc.Class({
         this.node.addChild(this.gun);
         this.gun.position = cc.v2(-30, 40);
     },
+
+    setHealth(n) {
+        this.health = n;
+        this.initHealth = this.health;
+    }
 
 
 });

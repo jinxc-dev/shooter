@@ -39,26 +39,29 @@ cc.Class({
             default: null,
             type: cc.Node
         },
-        healthImage: {
-            default: null,
-            type: cc.Node
-        },
 
         coinScore: 0,
         coinLabel:{
             default: null,
             type: cc.Label
         },
-        healthValue: 1,
+        lifeValue: 1,
 
         gameScore: 0,
         gameScoreLabel: {
             default: null,
             type:cc.Label
-        }
-
-        
-        
+        },
+        gameLevelLabel: cc.Label,
+        bulletCntNode: cc.Node,
+        bulletCntLabel: cc.Label,
+        lifeImgNode: {
+            default: [],
+            type: cc.Node
+        },
+        bossHealthLayout: cc.Node,
+        enemyHealthLayout: cc.Node
+ 
     },
 
     // LIFE-CYCLE CALLBACKS:
@@ -74,15 +77,23 @@ cc.Class({
         this.enemyCnt = 0;
         this.hasEnemy = false;
         this.readyEnemy =false;
+        this.level = 1;
 
         this.killedEnemyPool = new cc.NodePool('killedEnemy');
         this.killedPlayerPool = new cc.NodePool('killedPlayer');
         this.enemyHited = false;
         this.enemyComp = null;
+        this.deadBoss = false;
+        this.gameScore = 0;
+        this.maxEnemy = 5;
+        this.displayEnemyType = 'enemy';
     },
 
     start () {
-        this.initGame();
+        // this.initGame();
+        this.initStartGame();
+        this.updateLifeDisplay();
+        this.startGameLevel();
         this.node.parent.on("touchend", function(){
             if (this.readyShooter) {
                 this.shootedPlayer();
@@ -112,12 +123,23 @@ cc.Class({
         }, this);
     },
 
+    initStartGame() {
+        this.bulletCntNode.active = false;
+        this.gameScore = 0;
+    },
+
     initGame() {
+        this.enemyCnt = 0;
+        this.enemyHealthLayout.active = true;
+        this.bossHealthLayout.active = false;
         this.stairsPath = this.generateStairs();
         this.drawStairs(this.stairsPath);
+        this.deadBoss = false;
+        this.node.position = cc.v2(0, 0);
 
         this.player.x = this.node.width / 2;
         this.player.y = this.stairsPath[0].paths[0].y;
+        this.player.setScale(1, 1);
         this.hasEnemy = false;
         this.spawnEnemy();
         this.createPhyCollider(this.stairsPath[0]);
@@ -223,36 +245,12 @@ cc.Class({
         this.drawPart(prev, now, this.color);
     },
 
-    //. 
-    spawnBullet (angle, pos, normal) {
-        var bullet;
-        bullet = cc.instantiate(this.bulletPrefab);
-        this.node.addChild(bullet);
-
-        bullet.position = pos;
-        var alpha =  angle * Math.PI / 180;
-        
-        var d = 2000;
-        var xx = d * Math.cos(alpha) * normal.x;
-        var yy = d * Math.sin(alpha) * normal.y;
-        var _body = bullet.getComponent(cc.RigidBody);
-        
-        _body.linearVelocity = cc.v2(xx, yy);
-        _body.active = true;
-        return bullet;
-    },
-
-    despawnBullet(bullet) {
-        this.bulletPool.put(bullet);
-
-    },
-
     //. create enemy
     spawnEnemy() {
         var enemy;
         var comp;
         this.enemyComp = null;
-        if (this.enemyCnt < 2) {
+        if (this.enemyCnt < this.maxEnemy) {
             enemy = cc.instantiate(this.enemyPrefab);
             comp = 'enemy';
 
@@ -260,8 +258,11 @@ cc.Class({
             enemy = cc.instantiate(this.bossPrefab);
             comp = 'boss';
         }
+        this.displayEnemyType = comp;
         this.node.addChild(enemy);
         enemy.getComponent(comp).display(this.stairsPath[0]);
+        //. set boss health
+        enemy.getComponent(comp).setHealth(this.level * 2);
         this.enemyCnt ++;
         this.readyEnemy = false;
 
@@ -274,13 +275,13 @@ cc.Class({
         // this.readyEnemy = true;
     },
 
-    spawnCircle(pos) {
+    spawnCircle(pos, score) {
         var obj =cc.instantiate(this.circlePrefab);
         this.node.parent.addChild(obj);
         obj.position = pos;
-
         // var x;
         var comp = obj.getComponent('circle');
+        comp.setScore(score);
         comp.play();
     },
 
@@ -339,6 +340,10 @@ cc.Class({
         play.updatePos(p, this.stepH);
         this.createPhyCollider(this.stairsPath[1]);
         this.readyEnemy = false;
+        if (this.enemyCnt == 5 && this.displayEnemyType != 'boss') {
+            this.enemyHealthLayout.active = false;
+            this.bossHealthLayout.active = true;
+        }
     },
 
     readyPlayerShoot() {
@@ -380,7 +385,23 @@ cc.Class({
 
     addCoin: function() {
         this.coinScore ++;
-        this.coinLabel.string = this.coinScore;
+        this.coinLabel.string = this.pad(this.coinScore, 3);
+    },
+    addLife: function() {
+        if (this.lifeValue == 3)
+            return;
+        this.lifeValue ++;
+        
+        this.updateLifeDisplay();
+    },
+    deadLife: function() {
+        console.log("deadLife");
+        this.lifeValue --;
+        if (this.lifeValue < 1) {
+            console.log('GameOver');
+            this.gameOver();
+        } 
+        this.updateLifeDisplay();
     },
     getBonus () {
         var n = this.bonus.length;
@@ -413,6 +434,66 @@ cc.Class({
         c.offset = offset;
         c.points = tmp;
         c.apply();
+    },
+
+    startGameLevel() {
+        this.color = cc.color(73, 120, 228, 255);
+        this.initGame();
+        this.gameLevelLabel.string = "level " + this.level;
+    },
+
+    updateGameLevel() {
+        this.level ++;
+        this.startGameLevel();
+    },
+
+    putGun(gunNum, bullet_cnt) {
+        this.bulletCntNode.active = true;
+        this.player.getComponent('player').setGun(gunNum, bullet_cnt);
+        this.updateGunCnt(bullet_cnt);
+    },
+
+    updateGunCnt(cnt) {
+        this.bulletCntLabel.string = cnt; 
+    },
+    putOldGun() {
+        this.bulletCntNode.active = false;
+    },
+
+    updateLifeDisplay() {
+        for (var i = 0; i < 3; i++) {
+            this.lifeImgNode[i].active = false;
+        }
+        console.log("LIFE:" + this.lifeValue);
+        for (var i = 0; i < this.lifeValue; i++) {
+            this.lifeImgNode[i].active = true;
+        }
+        
+    },
+
+    gameOver() {
+        this.player.active = false;
+    },
+
+    updateScore(b_head) {
+        var coff = (b_head) ? 2 : 1;
+        this.gameScore += coff * this.level;
+        this.gameScoreLabel.string = this.pad(this.gameScore, 5);
+    },
+
+    //. 000000 construct
+    pad(a,b){
+        return (1000000 + a + "").slice(-b) 
+    },
+
+    upgardeEnemyHealth() {
+        if (this.enemyCnt < this.maxEnemy) {
+            this.enemyHealthLayout.getComponent('enemyHealth').upgardeBar(this.enemyCnt);
+        } 
+    },
+
+    upgardeBossHealth(init, now) {
+        this.bossHealthLayout.getComponent('bossHealth').upgardeBar(init, now);
     }
 
 });

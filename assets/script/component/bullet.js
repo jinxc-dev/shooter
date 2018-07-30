@@ -32,8 +32,4 @@ cc.Class({
         this.node.removeFromParent();
     },
 
-    getWorldPos() {
-        
-    }
-
 });

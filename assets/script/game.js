@@ -6,6 +6,9 @@ cc.Class({
             default: null,
             type: cc.Node
         },
+        startBtn: cc.Node,
+        startLayout: cc.Layout,
+        mainLayout: cc.Layout
 
     },
 
@@ -17,9 +20,20 @@ cc.Class({
         //     cc.PhysicsManager.DrawBits.e_shapeBit;
         // cc.director.getPhysicsManager().gravity = cc.v2 (0, -320);
         cc.director.getCollisionManager().enabled = true;
+
+        this.gameColor = [
+            cc.color(73, 120, 228, 255),
+            cc.color(219, 119, 131, 255)
+        ];
     },
 
     start () {
+        this.mainLayout.node.color = this.gameColor[Math.round(cc.random0To1() * this.gameColor.length)];
+        this.startBtn.on("touchstart", function(){
+            console.log('start Game');
+            this.bgNode.getComponent('bgMap').startGame();
+            this.startLayout.node.active = false;
+        }, this);
     },
 
     initGame() {

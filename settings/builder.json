@@ -25,7 +25,7 @@
     "REMOTE_SERVER_ROOT": "",
     "orientation": "portrait"
   },
-  "renderMode": "1",
+  "renderMode": "0",
   "startScene": "f8dd6bfa-f91e-4ec0-bc5d-24255ff65042",
   "title": "shooter",
   "webOrientation": "auto",

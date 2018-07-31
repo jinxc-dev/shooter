@@ -191,8 +191,8 @@ cc.Class({
         this.stopShooter();
         var p = this.pathInfo.paths;
         var coff = this.pathInfo.coff;
-        var xx = (coff + 1) * this.game.node.width - p[p.length - 1].x;
-        var s1 = cc.moveBy(1, xx, 0);
+        var xx = (coff + 1) * this.game.node.width / 2 - p[p.length - 1].x;
+        var s1 = cc.moveBy(0.5, xx, 0);
 
         var endF = cc.callFunc(this.endMoveEnd, this);
         var se = cc.sequence(s1, endF);

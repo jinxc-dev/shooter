@@ -69,8 +69,10 @@ cc.Class({
     onLoad () {
 
         this.graphics = this.getComponent(cc.Graphics);        
-        this.color = cc.color(73, 120, 228, 255);
+        // this.color = cc.color(73, 120, 228, 255);
+        this.color = cc.color(0, 0, 0, 0);
         this.colorStep = cc.color(5, 9, 15);
+        this.colorOptical = 0;
         this.initCnt = 10;
         this.stairsPath;
         this.bonus=[];
@@ -90,11 +92,9 @@ cc.Class({
     },
 
     start () {
-        // this.initGame();
-        this.initStartGame();
-        this.updateLifeDisplay();
-        this.startGameLevel();
-        this.node.parent.on("touchend", function(){
+        this.readyStartGame();
+
+        this.node.parent.on("touchstart", function(){
             if (this.readyShooter) {
                 this.shootedPlayer();
                 this.readyShooter = false;
@@ -123,23 +123,50 @@ cc.Class({
         }, this);
     },
 
-    initStartGame() {
-        this.bulletCntNode.active = false;
-        this.gameScore = 0;
+    readyStartGame() {
+        this.colorOptical = 0;  
+        this.createMapAndPlayer();
+        this.player.getComponent('player').start();
+        this.player.getComponent('player').stopShooter();
+        this.node.parent.pauseSystemEvents(true);
+        this.setOtherNode(false);
+        this.lifeValue = 0;
+        this.updateLifeDisplay();
     },
 
-    initGame() {
-        this.enemyCnt = 0;
-        this.enemyHealthLayout.active = true;
-        this.bossHealthLayout.active = false;
+    startGame() {
+        this.lifeValue = 1;
+        this.node.parent.resumeSystemEvents(true);
+        this.updateLifeDisplay();
+        this.setOtherNode(true);
+        this.bulletCntNode.active = false;
+        this.gameScore = 0;
+        this.initGame();
+        this.gameLevelLabel.string = "level " + this.level;
+    },
+
+    setOtherNode(status) {
+        this.enemyHealthLayout.active = status;
+        this.gameScoreLabel.node.active = status;
+        this.bulletCntNode.active = status;
+
+    },
+
+    createMapAndPlayer() {
+        this.graphics.clear();
+        this.node.position = cc.v2(0, 0);
         this.stairsPath = this.generateStairs();
         this.drawStairs(this.stairsPath);
-        this.deadBoss = false;
-        this.node.position = cc.v2(0, 0);
-
         this.player.x = this.node.width / 2;
         this.player.y = this.stairsPath[0].paths[0].y;
         this.player.setScale(1, 1);
+    },
+
+    initGame() {
+        this.enemyCnt = 0;    
+        this.enemyHealthLayout.active = true;
+        this.bossHealthLayout.active = false;
+        this.deadBoss = false;        
         this.hasEnemy = false;
         this.spawnEnemy();
         this.createPhyCollider(this.stairsPath[0]);
@@ -168,8 +195,8 @@ cc.Class({
         var prev = prevInfo.paths;
         var now = nowInfo.paths;
         var n = now.length;
-
         g.fillColor = color;
+        // g.strokeColor = color;
 
         g.moveTo(now[0].x, now[0].y);
         for (var i = 1; i < n; i++) {
@@ -187,14 +214,20 @@ cc.Class({
             g.lineTo(prev[i].x, prev[i].y);
         }
         g.lineTo(now[0].x, now[0].y);
-        console.log('---------------------');
+        
+        // g.close();
+        g.fill();
         // g.stroke();
         g.close();
-        g.fill();
 
     },
     upgardColor(color, step) {
-        return cc.color(color.getR() - step.getR(), color.getG() - step.getG(), color.getB() - step.getB(), 255);
+        // return cc.color(color.getR() - step.getR(), color.getG() - step.getG(), color.getB() - step.getB(), 255);
+        this.colorOptical += 15;
+        if (this.colorOptical > 255) {
+            this.colorOptical = 0;
+        }
+        return cc.color(0, 0, 0, this.colorOptical);
     },
 
     //. generate stairs information.
@@ -340,7 +373,7 @@ cc.Class({
         play.updatePos(p, this.stepH);
         this.createPhyCollider(this.stairsPath[1]);
         this.readyEnemy = false;
-        if (this.enemyCnt == 5 && this.displayEnemyType != 'boss') {
+        if (this.enemyCnt == this.maxEnemy && this.displayEnemyType != 'boss') {
             this.enemyHealthLayout.active = false;
             this.bossHealthLayout.active = true;
         }
@@ -437,7 +470,9 @@ cc.Class({
     },
 
     startGameLevel() {
-        this.color = cc.color(73, 120, 228, 255);
+        this.color = cc.color(0, 0, 0, 0);
+        this.colorOptical = 0;  
+        this.createMapAndPlayer();
         this.initGame();
         this.gameLevelLabel.string = "level " + this.level;
     },

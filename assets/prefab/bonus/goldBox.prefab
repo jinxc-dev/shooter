@@ -10,7 +10,7 @@
   },
   {
     "__type__": "cc.Node",
-    "_name": "gun",
+    "_name": "goldBox",
     "_objFlags": 0,
     "_parent": null,
     "_children": [],
@@ -40,12 +40,12 @@
     "_anchorPoint": {
       "__type__": "cc.Vec2",
       "x": 0.5,
-      "y": 0.8
+      "y": 0
     },
     "_contentSize": {
       "__type__": "cc.Size",
       "width": 60,
-      "height": 40
+      "height": 50
     },
     "_rotationX": 0,
     "_rotationY": 0,
@@ -72,7 +72,7 @@
     },
     "_enabled": true,
     "_spriteFrame": {
-      "__uuid__": "84cc5a6d-8b27-465d-8bfe-9fa92f49c4bc"
+      "__uuid__": "64cf6da4-403b-40f0-b14b-5fd3b62d1a63"
     },
     "_type": 0,
     "_sizeMode": 0,
@@ -90,19 +90,14 @@
     "_atlas": null
   },
   {
-    "__type__": "6f5e0inWwxJrYoYKsSPrHub",
+    "__type__": "8a828EHpPlDJpKJ6ZVzDFpt",
     "_name": "",
     "_objFlags": 0,
     "node": {
       "__id__": 1
     },
     "_enabled": true,
-    "bulletBuff": 1,
-    "bulletPrefab": {
-      "__uuid__": "cdd83852-2563-4984-bedf-a62440724fc6"
-    },
-    "aimLen": 50,
-    "power": 1
+    "type": 0
   },
   {
     "__type__": "cc.PrefabInfo",
@@ -110,9 +105,9 @@
       "__id__": 1
     },
     "asset": {
-      "__uuid__": "7f2abbcb-7112-436e-b23f-98f892c148cc"
+      "__uuid__": "0f1cf600-1283-4fb0-a9b0-abafc5da8fb4"
     },
-    "fileId": "abhT1jEXxPSJsR+Th8IePK",
+    "fileId": "eaL1r1xe1DVZpRy0DoFjmR",
     "sync": false
   }
 ]

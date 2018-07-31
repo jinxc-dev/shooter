@@ -19,6 +19,7 @@ cc.Class({
     },
 
     initMove() {
+        console.log('bossIcon:' + this.bossInitPos);
         this.bossIcon.position = this.bossInitPos;
         this.bossIcon.setScale(1);
         this.healthMask.active = false;
@@ -29,7 +30,6 @@ cc.Class({
     },
 
     onEnable() {
-        console.log('BOSS');
         this.initMove();
         this.node.opacity = 50;
         var s2 = cc.fadeIn(1);
@@ -39,7 +39,6 @@ cc.Class({
 
     },
     endDisplay() {
-        console.log('BOSS END');
         var s1 = cc.scaleTo(.5, 0.5);
         var s2 = cc.moveTo(.5, 0, 40);
         this.bossIcon.runAction(cc.sequence(s1, s2, cc.callFunc(this.endMove, this)));

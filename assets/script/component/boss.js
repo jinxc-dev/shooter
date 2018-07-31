@@ -35,12 +35,12 @@ cc.Class({
         game.upgardeBossHealth(this.initHealth, this.health);
         if (this.health > 0) {
             game.hasEnemy = true;
-            game.enemyHitedOK();
+            game.enemyHitedOK(b_head);
         } else {
             game.hasEnemy = false;
             game.deadBoss = true;
             game.removeAnim(pos, 'enemy');
-            game.enemyHitedOK();
+            game.enemyHitedOK(b_head);
             this.node.removeFromParent(); 
         }
 

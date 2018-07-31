@@ -28,7 +28,8 @@ cc.Class({
     },
 
     start () {
-        this.mainLayout.node.color = this.gameColor[Math.round(cc.random0To1() * this.gameColor.length)];
+        var n = Math.round(cc.random0To1() * (this.gameColor.length - 1));
+        this.mainLayout.node.color = this.gameColor[n];
         this.startBtn.on("touchstart", function(){
             console.log('start Game');
             this.bgNode.getComponent('bgMap').startGame();

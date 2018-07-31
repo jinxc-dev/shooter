@@ -60,7 +60,9 @@ cc.Class({
             type: cc.Node
         },
         bossHealthLayout: cc.Node,
-        enemyHealthLayout: cc.Node
+        enemyHealthLayout: cc.Node,
+        gameOverLayout: cc.Layout,
+        headShotNode: cc.Node
  
     },
 
@@ -89,6 +91,9 @@ cc.Class({
         this.gameScore = 0;
         this.maxEnemy = 5;
         this.displayEnemyType = 'enemy';
+        this.gameOverLayout.node.getComponent('gameOverLayout').setGameScene(this);
+        this.gameContinueByCoin = true;
+        this.headShot = false;
     },
 
     start () {
@@ -102,13 +107,14 @@ cc.Class({
         }, this);
 
         this.node.on("end_shooter", function(){
+            this.headShotNode.getComponent('headShot').checkHeadShot(this.headShot);
+            this.headShot = false;
             if (this.enemyHited) {
                 if (this.hasEnemy) {
                     this.enemyComp.updatePos();
                 }
                 this.playerNextStep();
-
-            } else {
+            } else {                
                 if (!this.readyShooter) {
                     this.enemyComp.readyShooter(this.player.position);
                     this.player.getComponent('player').stopShooter();
@@ -124,29 +130,62 @@ cc.Class({
     },
 
     readyStartGame() {
-        this.colorOptical = 0;  
+        this.colorOptical = 0;
+        this.color = cc.color(0, 0, 0, 0);
+        this.player.active = true;
+        this.getCoinCount();  
         this.createMapAndPlayer();
         this.player.getComponent('player').start();
         this.player.getComponent('player').stopShooter();
-        this.node.parent.pauseSystemEvents(true);
+        this.pushGameEvent();
         this.setOtherNode(false);
         this.lifeValue = 0;
         this.updateLifeDisplay();
+        this.headShotNode.getComponent('headShot').init();
+    },
+
+    pushGameEvent() {
+        this.node.parent.pauseSystemEvents(true);
+        this.node.pauseSystemEvents(true);
+
+    },
+    resumeGameEvent() {
+        this.node.parent.resumeSystemEvents(true);
+        this.node.resumeSystemEvents(true);
+
     },
 
     startGame() {
         this.lifeValue = 1;
-        this.node.parent.resumeSystemEvents(true);
+        this.resumeGameEvent();
         this.updateLifeDisplay();
         this.setOtherNode(true);
         this.bulletCntNode.active = false;
         this.gameScore = 0;
         this.initGame();
         this.gameLevelLabel.string = "level " + this.level;
+        
+        //. continue game by coin
+        
+    },
+    exitGame() {
+        this.colorOptical = 0;
+        this.enemyCnt = 0;
+        this.hasEnemy = false;
+        this.readyEnemy =false;
+        this.level = 1;
+        this.enemyHited = false;
+        this.enemyComp = null;
+        this.deadBoss = false;
+        this.gameScore = 0;
+        this.displayEnemyType = 'enemy';
+        this.node.removeChildByTag(2001);
     },
 
     setOtherNode(status) {
         this.enemyHealthLayout.active = status;
+        if (!status && this.bossHealthLayout.active)
+            this.bossHealthLayout.active = status;
         this.gameScoreLabel.node.active = status;
         this.bulletCntNode.active = status;
 
@@ -163,7 +202,7 @@ cc.Class({
     },
 
     initGame() {
-        this.enemyCnt = 0;    
+        this.enemyCnt = 0;
         this.enemyHealthLayout.active = true;
         this.bossHealthLayout.active = false;
         this.deadBoss = false;        
@@ -250,7 +289,6 @@ cc.Class({
 
     generatePath(maxN, minN, pos, coff, step) {
         var n = Math.round(cc.random0To1() * (maxN - minN)) + minN;
-        console.log('N:' + n);
         var p = [];
         for (var i = 0; i < n; i++) {
             var x = coff * (i * step + this.startPos.x) + this.node.width / 2;
@@ -292,7 +330,7 @@ cc.Class({
             comp = 'boss';
         }
         this.displayEnemyType = comp;
-        this.node.addChild(enemy);
+        this.node.addChild(enemy, 1, 2001);
         enemy.getComponent(comp).display(this.stairsPath[0]);
         //. set boss health
         enemy.getComponent(comp).setHealth(this.level * 2);
@@ -363,8 +401,9 @@ cc.Class({
 
 
     // ********************** Recycle ********************************
-    enemyHitedOK() {
+    enemyHitedOK(b_headShot) {
         this.enemyHited = true;
+        this.headShot = b_headShot;
     },
 
     playerNextStep() {
@@ -383,11 +422,6 @@ cc.Class({
         this.readyShooter = true;
         this.enemyHited = false;
         this.player.getComponent('player').shooterReady = true;
-    },
-
-    readyEnemyShoot() {
-        this.readyShooter = false;
-        
     },
 
     upgardMap() {
@@ -418,7 +452,7 @@ cc.Class({
 
     addCoin: function() {
         this.coinScore ++;
-        this.coinLabel.string = this.pad(this.coinScore, 3);
+        this.coinLabel.string = this.coinScore;//this.pad(this.coinScore, 3);
     },
     addLife: function() {
         if (this.lifeValue == 3)
@@ -508,12 +542,24 @@ cc.Class({
 
     gameOver() {
         this.player.active = false;
+        this.pushGameEvent();
+        this.gameOverLayout.node.active = true;
+        this.gameOverLayout.getComponent('gameOverLayout').setGameInfo(this.gameScore, this.coinScore);
+    },
+    continueGame() {
+        this.resumeGameEvent();
+        this.lifeValue = 1;
+        this.player.active = true;
+        this.updateLifeDisplay();
+        this.gameContinueByCoin = false;
     },
 
     updateScore(b_head) {
         var coff = (b_head) ? 2 : 1;
         this.gameScore += coff * this.level;
         this.gameScoreLabel.string = this.pad(this.gameScore, 5);
+        //. head shot count display
+        
     },
 
     //. 000000 construct
@@ -529,6 +575,22 @@ cc.Class({
 
     upgardeBossHealth(init, now) {
         this.bossHealthLayout.getComponent('bossHealth').upgardeBar(init, now);
+    },
+
+    getCoinCount() {
+        var ls = cc.sys.localStorage;
+        var score = ls.getItem('coinCount');
+        if (score == "" || score == undefined || score == null) {
+            score = 0;
+        }
+        this.coinScore = parseInt(score);
+        this.coinLabel.string = this.coinScore;//this.pad(this.coinScore, 3);
+    },
+    setCoinCount(coinCnt) {
+        var ls = cc.sys.localStorage;
+        this.coinScore = coinCnt;
+        ls.setItem("coinCount", this.coinScore);
+
     }
 
 });

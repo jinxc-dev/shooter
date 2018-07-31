@@ -32,7 +32,7 @@ cc.Class({
         game.updateScore(b_head);
         game.removeAnim(pos, 'enemy');
 
-        game.enemyHitedOK();
+        game.enemyHitedOK(b_head);
 
         for (var i = 0; i < this.bonus.length; i++) {
             var b = this.bonus[i];
@@ -67,8 +67,8 @@ cc.Class({
     },
 
     start () {
-        // var b = [1, 1, 1, 1, 1, 2, 1, 1];
-        var b = [2, 2, 2, 2, 2, 2, 2, 2];
+        var b = [1, 1, 1, 1, 1, 2, 1, 1];
+        // var b = [2, 2, 2, 2, 2, 2, 2, 2];
         this.stopShooter();
         this.bonus.push(b[Math.floor(b.length * cc.random0To1())]);
         this.targetAngle = 0;

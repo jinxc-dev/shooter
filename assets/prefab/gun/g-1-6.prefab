@@ -44,7 +44,7 @@
     },
     "_contentSize": {
       "__type__": "cc.Size",
-      "width": 60,
+      "width": 100,
       "height": 40
     },
     "_rotationX": 0,
@@ -72,7 +72,7 @@
     },
     "_enabled": true,
     "_spriteFrame": {
-      "__uuid__": "84cc5a6d-8b27-465d-8bfe-9fa92f49c4bc"
+      "__uuid__": "a96933d1-0ab0-40bc-9e08-8e00e03bd2c2"
     },
     "_type": 0,
     "_sizeMode": 0,
@@ -97,13 +97,13 @@
       "__id__": 1
     },
     "_enabled": true,
-    "bulletBuff": 1,
+    "bulletBuff": 2,
     "bulletPrefab": {
       "__uuid__": "cdd83852-2563-4984-bedf-a62440724fc6"
     },
     "aimLen": 50,
     "power": 3,
-    "gunName": "pistol"
+    "gunName": "G-1-6"
   },
   {
     "__type__": "cc.PrefabInfo",
@@ -111,7 +111,7 @@
       "__id__": 1
     },
     "asset": {
-      "__uuid__": "7f2abbcb-7112-436e-b23f-98f892c148cc"
+      "__uuid__": "7f520eac-a55a-4ff2-a099-569c32a48be9"
     },
     "fileId": "abhT1jEXxPSJsR+Th8IePK",
     "sync": false

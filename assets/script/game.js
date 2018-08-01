@@ -8,16 +8,14 @@ cc.Class({
         },
         startBtn: cc.Node,
         startLayout: cc.Layout,
-        mainLayout: cc.Layout
+        mainLayout: cc.Layout,
+        gunListLayout: cc.Layout,
+        gunListBtn: cc.Node
 
     },
 
     onLoad() {
-        // console.log("width:" + this.node.width);
         cc.director.getPhysicsManager().enabled = true;
-        // cc.director.getPhysicsManager().debugDrawFlags =
-        //     cc.PhysicsManager.DrawBits.e_jointBit |
-        //     cc.PhysicsManager.DrawBits.e_shapeBit;
         // cc.director.getPhysicsManager().gravity = cc.v2 (0, -320);
         cc.director.getCollisionManager().enabled = true;
 
@@ -25,6 +23,14 @@ cc.Class({
             cc.color(73, 120, 228, 255),
             cc.color(219, 119, 131, 255)
         ];
+
+        this.gameStorageCheck('gun_num', 0);
+        this.gameStorageCheck('coinCount', 0);
+        var vv = [1];
+        for (var i = 0; i < 22; i++) 
+            vv.push(0);
+        this.gameStorageCheck('enableGunList', vv);
+
     },
 
     start () {
@@ -35,9 +41,19 @@ cc.Class({
             this.bgNode.getComponent('bgMap').startGame();
             this.startLayout.node.active = false;
         }, this);
+
+        this.gunListBtn.on('touchstart', function() {
+            this.gunListLayout.node.active = true;
+        }, this);
     },
 
-    initGame() {
+    gameStorageCheck(key, value) {
+        var ls = cc.sys.localStorage;
+        var r = ls.getItem(key);
+        if (r == "" || r == null) {
+            ls.setItem(key, value);
+        }
+
     },
 
 

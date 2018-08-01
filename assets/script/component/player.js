@@ -53,12 +53,13 @@ cc.Class({
         this.bNewGun = false;
         this.bufferCnt = 0;
         // this.newGunNum = 0;
+        // this.setGun(this.gunNum, false);
+        this.gunNum = parseInt(cc.sys.localStorage.getItem("gun_num"));
     },
 
     start () {
         this.game = this.node.parent.getComponent('bgMap');
-        this.setGun(this.gunNum, false);
-        
+        this.setGun(this.gunNum, false);        
     },
 
     update (dt) {
@@ -224,13 +225,32 @@ cc.Class({
 
             if (this.bufferCnt < 1) {
                 this.bNewGun = false;
-                this.setGun(this.gunNum, true);
+                this.setGun(this.gunNum, false);
                 this.game.bulletCntNode.active = false;
             } else {
                 this.game.bulletCntLabel.string = this.bufferCnt;
                 this.game.bulletCntNode.active = true;
             }
         }
+    },
+
+    //. gun test function.
+    setTestGun(idx) {        
+        this.setGun(idx, false);        
+        this.gun.setRotation(45);
+        this.gun.getComponent('gun').setAngle(this.calcAlpha(45));
+        this.gun.getComponent('gun').setGunTest(true);
+        this.gun.getComponent('gun').startShoot();
+    },
+    setSelectGunReady() {
+        this.gun.setRotation(45);
+        this.gun.getComponent('gun').setAngle(this.calcAlpha(45));
+        this.gun.getComponent('gun').setGunTest(true);        
+    },
+    destroySelectGunReady() {
+        this.gun.setRotation(0);
+        this.gun.getComponent('gun').setAngle(0);
+        this.gun.getComponent('gun').setGunTest(false);
     }
 
 

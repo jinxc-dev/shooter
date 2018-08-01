@@ -44,8 +44,8 @@
     },
     "_contentSize": {
       "__type__": "cc.Size",
-      "width": 80,
-      "height": 40
+      "width": 90,
+      "height": 30
     },
     "_rotationX": 0,
     "_rotationY": 0,
@@ -72,7 +72,7 @@
     },
     "_enabled": true,
     "_spriteFrame": {
-      "__uuid__": "377506a6-c61d-457c-8fb4-5febd0882d90"
+      "__uuid__": "8d918503-cc23-4149-9e90-c837a99cf5cd"
     },
     "_type": 0,
     "_sizeMode": 0,
@@ -97,13 +97,13 @@
       "__id__": 1
     },
     "_enabled": true,
-    "bulletBuff": 1,
+    "bulletBuff": 3,
     "bulletPrefab": {
       "__uuid__": "cdd83852-2563-4984-bedf-a62440724fc6"
     },
-    "aimLen": 50,
-    "power": 8,
-    "gunName": "G-4-5"
+    "aimLen": 60,
+    "power": 3,
+    "gunName": "G-3-5"
   },
   {
     "__type__": "cc.PrefabInfo",
@@ -111,7 +111,7 @@
       "__id__": 1
     },
     "asset": {
-      "__uuid__": "e635a2da-dceb-4295-b71d-4c3c52c63b58"
+      "__uuid__": "def8753d-56fa-4e51-ad3c-fc40c4d25990"
     },
     "fileId": "abhT1jEXxPSJsR+Th8IePK",
     "sync": false

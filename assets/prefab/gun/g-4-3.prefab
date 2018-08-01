@@ -45,7 +45,7 @@
     "_contentSize": {
       "__type__": "cc.Size",
       "width": 90,
-      "height": 40
+      "height": 35
     },
     "_rotationX": 0,
     "_rotationY": 0,
@@ -102,8 +102,8 @@
       "__uuid__": "cdd83852-2563-4984-bedf-a62440724fc6"
     },
     "aimLen": 40,
-    "power": 3,
-    "gunName": "g-4-3"
+    "power": 5,
+    "gunName": "G-4-3"
   },
   {
     "__type__": "cc.PrefabInfo",

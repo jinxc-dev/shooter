@@ -17,18 +17,22 @@ cc.Class({
     onLoad() {
         this.deltaX = 0;
         this.deltaY = 0;
-    },
-    start () {
+        this.bGunTest = false;  //. gun tset status
         this.dealyTime = 0;
         this.angle = 0;
         this.bulletCnt = 0;
         this.readyStatus = false;
     },
+    start () {
+
+    },
 
     spawnBullet () {
         if (this.bulletCnt < 1) {
             this.readyStatus = false;
-            this.sendEndStatus();
+            if (!this.bGunTest) {
+                this.sendEndStatus();
+            }
             return;
         }
         this.bulletCnt --;
@@ -55,8 +59,6 @@ cc.Class({
         this.runShock();
         return bullet;
     },
-
-
 
     update (dt) {
         if (this.readyStatus) {
@@ -100,5 +102,10 @@ cc.Class({
         var se = cc.sequence(s1, s2);
         this.node.runAction(se);
     },
+
+    //. set, remove gun test
+    setGunTest(bTest) {
+        this.bGunTest = bTest;
+    }
 
 });

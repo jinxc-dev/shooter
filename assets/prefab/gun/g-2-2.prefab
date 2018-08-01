@@ -44,8 +44,8 @@
     },
     "_contentSize": {
       "__type__": "cc.Size",
-      "width": 80,
-      "height": 40
+      "width": 90,
+      "height": 30
     },
     "_rotationX": 0,
     "_rotationY": 0,
@@ -72,7 +72,7 @@
     },
     "_enabled": true,
     "_spriteFrame": {
-      "__uuid__": "377506a6-c61d-457c-8fb4-5febd0882d90"
+      "__uuid__": "03ddb6d3-9e4e-41f5-ac5e-d79b73a3d73e"
     },
     "_type": 0,
     "_sizeMode": 0,
@@ -102,8 +102,8 @@
       "__uuid__": "cdd83852-2563-4984-bedf-a62440724fc6"
     },
     "aimLen": 50,
-    "power": 8,
-    "gunName": "G-4-5"
+    "power": 4,
+    "gunName": "G-2-2"
   },
   {
     "__type__": "cc.PrefabInfo",
@@ -111,7 +111,7 @@
       "__id__": 1
     },
     "asset": {
-      "__uuid__": "e635a2da-dceb-4295-b71d-4c3c52c63b58"
+      "__uuid__": "a92f78ab-7196-4f02-a72e-943c8062809a"
     },
     "fileId": "abhT1jEXxPSJsR+Th8IePK",
     "sync": false

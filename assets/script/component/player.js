@@ -24,11 +24,12 @@ cc.Class({
         var node_pos = self.node.getPosition();
         var p_y = self.node.parent.y;
 
-        other.node.removeFromParent();
-        if (this.game.readyShooter) {
+        if (other.node.parent.parent.name != 'player') {
             this.game.deadLife();
             this.game.removeAnim(pos, 'player');
         }
+        other.node.removeFromParent();
+
         return;
 
         // this.node.removeFromParent();
@@ -49,12 +50,14 @@ cc.Class({
         this.game;
         this.gunNum = 0;
         this.gun = null;
+        this.bNewGun = false;
+        this.bufferCnt = 0;
         // this.newGunNum = 0;
     },
 
     start () {
         this.game = this.node.parent.getComponent('bgMap');
-        this.setGun(this.gunNum);
+        this.setGun(this.gunNum, false);
         
     },
 
@@ -169,11 +172,14 @@ cc.Class({
         return this.R.alpha;
     },
 
-    setGun(n) {
+    setGun(n, b_newGun) {
         if (this.gun != null) {
+            this.gun.removeChild();
             this.gun.removeFromParent();
             this.gun = null;
         }
+
+        this.bNewGun = b_newGun;
 
         this.gun = cc.instantiate(this.gunPrefab[n]);
         this.node.addChild(this.gun);
@@ -185,6 +191,7 @@ cc.Class({
         this.shooterReady = false;
         this.track.clear();
         this.gun.getComponent('gun').startShoot();
+
     },
 
     runMoveEnd() {
@@ -200,6 +207,31 @@ cc.Class({
     },
     endMoveEnd() {
         this.game.updateGameLevel();
+    },
+
+    setNewGun(n, buffer) {
+        this.setGun(n);
+        this.bufferCnt = buffer;
+        this.bNewGun = true;
+        this.game.bulletCntNode.active = true;
+        this.game.bulletCntLabel.string = this.bufferCnt;
+    },
+
+    //. now gun status check.
+    checkGunStatus() {
+        if (this.bNewGun) {
+            this.bufferCnt --;
+
+            if (this.bufferCnt < 1) {
+                this.bNewGun = false;
+                this.setGun(this.gunNum, true);
+                this.game.bulletCntNode.active = false;
+            } else {
+                this.game.bulletCntLabel.string = this.bufferCnt;
+                this.game.bulletCntNode.active = true;
+            }
+        }
     }
+
 
 });

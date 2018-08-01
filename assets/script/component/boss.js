@@ -41,6 +41,7 @@ cc.Class({
             game.deadBoss = true;
             game.removeAnim(pos, 'enemy');
             game.enemyHitedOK(b_head);
+            this.generateBonus(game);
             this.node.removeFromParent(); 
         }
 
@@ -52,7 +53,7 @@ cc.Class({
         this.R = {
             alpha: 0,
             coff: 1,
-            step: 5,
+            step: 3,
             delta: 0,
             rr: 30
         };
@@ -85,7 +86,7 @@ cc.Class({
 
     drawShooter(dt) {
         this.R.delta += dt;
-        if (this.R.delta < 0.1) {
+        if (this.R.delta < 0.05) {
             return;
         }
 
@@ -117,7 +118,7 @@ cc.Class({
         this.R = {
             alpha: 0,
             coff: 1,
-            step: 5,
+            step: 3,
             delta: 0,
             rr: 30
         };
@@ -130,8 +131,10 @@ cc.Class({
         this.node.x = w / 2 * (info.coff + 1);
         this.node.y = pos.y;
         this.node.setScale(info.coff, 1);
+        var step = pos.x + 50 * info.coff;
+        var t = Math.abs(this.node.x - step) / 50;
 
-        var s1 = cc.jumpTo(0.5, cc.v2(pos.x + 50 * info.coff, pos.y), 50, 1);
+        var s1 = cc.jumpTo(0.1 * t, cc.v2(step, pos.y), 50, 1);
         var se = cc.sequence(s1, cc.callFunc(this.endDisplay, this));
         this.node.runAction(se);
     },
@@ -193,6 +196,23 @@ cc.Class({
     setHealth(n) {
         this.health = n;
         this.initHealth = this.health;
+    },
+
+    generateBonus(game) {
+        var coinCnt = Math.round(game.level);// + 3;
+        var node_pos = this.node.getPosition();
+        //. create coin
+        for (var i = 0; i < coinCnt; i++) {
+            game.spawnBonus(cc.v2(node_pos.x, node_pos.y + this.node.parent.y), 1);
+        }
+
+        var gunBonus = Math.round(cc.random0To1() + 0.2);
+        if (gunBonus != 0) {
+            game.goldBox.position = node_pos;
+            game.goldBox.active = true;
+        } else {
+            game.spawnBonus(cc.v2(node_pos.x, node_pos.y + this.node.parent.y), 2);
+        }
     }
 
 

@@ -101,7 +101,9 @@
     "bulletPrefab": {
       "__uuid__": "cdd83852-2563-4984-bedf-a62440724fc6"
     },
-    "aimLen": 50
+    "aimLen": 50,
+    "power": 3,
+    "gunName": "g-4-4"
   },
   {
     "__type__": "cc.PrefabInfo",

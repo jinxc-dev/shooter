@@ -9,7 +9,8 @@ cc.Class({
             type: cc.Prefab
         },
         aimLen: 20,
-        power: 3
+        power: 3,
+        gunName: "pistol"
         // dealyT : 0.5
     },
 
@@ -72,16 +73,24 @@ cc.Class({
     },
 
     startShoot() {
-        console.log('SSSSSS:' + this.bulletBuff);
         this.readyStatus = true;
         this.bulletCnt = this.bulletBuff;
     },
 
     sendEndStatus() {
+        //. if owner is player, check gunStatus.
+
         this.scheduleOnce(function(){
             var event = new cc.Event.EventCustom("end_shooter", true);
             this.node.dispatchEvent(event);
+
+            if (this.node.parent.name == 'player') {
+                console.log('ower');
+                this.node.parent.getComponent('player').checkGunStatus();
+            }
         }, 0.5);
+
+
     },
 
     runShock() {

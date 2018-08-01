@@ -62,7 +62,9 @@ cc.Class({
         bossHealthLayout: cc.Node,
         enemyHealthLayout: cc.Node,
         gameOverLayout: cc.Layout,
-        headShotNode: cc.Node
+        headShotNode: cc.Node,
+        gunBonusLayout: cc.Layout,
+        goldBox: cc.Node
  
     },
 
@@ -73,7 +75,6 @@ cc.Class({
         this.graphics = this.getComponent(cc.Graphics);        
         // this.color = cc.color(73, 120, 228, 255);
         this.color = cc.color(0, 0, 0, 0);
-        this.colorStep = cc.color(5, 9, 15);
         this.colorOptical = 0;
         this.initCnt = 10;
         this.stairsPath;
@@ -92,27 +93,32 @@ cc.Class({
         this.maxEnemy = 5;
         this.displayEnemyType = 'enemy';
         this.gameOverLayout.node.getComponent('gameOverLayout').setGameScene(this);
+        this.gunBonusLayout.node.getComponent('gunBonusLayout').setGameScene(this);
         this.gameContinueByCoin = true;
         this.headShot = false;
     },
 
     start () {
         this.readyStartGame();
+        this.playerShot = false;
 
         this.node.parent.on("touchstart", function(){
-            if (this.readyShooter) {
+            if (!this.playerShot && this.readyShooter) {
                 this.shootedPlayer();
                 this.readyShooter = false;
+                this.playerShot = true;
             }
         }, this);
 
         this.node.on("end_shooter", function(){
             this.headShotNode.getComponent('headShot').checkHeadShot(this.headShot);
             this.headShot = false;
+            // this.player.getComponent('player').checkGunStatus();
             if (this.enemyHited) {
                 if (this.hasEnemy) {
                     this.enemyComp.updatePos();
                 }
+                this.playerShot = false;
                 this.playerNextStep();
             } else {                
                 if (!this.readyShooter) {
@@ -124,6 +130,7 @@ cc.Class({
                     this.enemyComp.stopShooter();
                     this.player.getComponent('player').shooterReady = true;
                     this.readyEnemy = false;
+                    this.playerShot = false;
                 }
             }
         }, this);
@@ -205,6 +212,7 @@ cc.Class({
         this.enemyCnt = 0;
         this.enemyHealthLayout.active = true;
         this.bossHealthLayout.active = false;
+        this.goldBox.active = false;
         this.deadBoss = false;        
         this.hasEnemy = false;
         this.spawnEnemy();
@@ -223,7 +231,7 @@ cc.Class({
         this.drawPart(initPath, stairs[0], this.color);
 
         for (var i = 1; i < stairs.length; i++) {
-            this.color = this.upgardColor(this.color, this.colorStep);
+            this.color = this.upgardColor();
             this.drawPart(stairs[i - 1], stairs[i], this.color);
         }
 
@@ -260,8 +268,7 @@ cc.Class({
         g.close();
 
     },
-    upgardColor(color, step) {
-        // return cc.color(color.getR() - step.getR(), color.getG() - step.getG(), color.getB() - step.getB(), 255);
+    upgardColor() {
         this.colorOptical += 15;
         if (this.colorOptical > 255) {
             this.colorOptical = 0;
@@ -274,10 +281,11 @@ cc.Class({
         var paths = [];
         var w_flag = true;
         var w_prevPath = this.startPos;
+        var maxN = (this.level > 4)? 5: 3;
         for (var i = 0; i < this.initCnt; i++) {
             w_flag = !w_flag;
             var coff = (w_flag) ? 1: -1;
-            var w_path = this.generatePath(3, 2, w_prevPath, coff, this.stepH);
+            var w_path = this.generatePath(maxN, 2, w_prevPath, coff, this.stepH);
             paths.push({
                 coff: coff,
                 paths: w_path
@@ -310,7 +318,7 @@ cc.Class({
             coff: coff,
             paths: this.generatePath(3, 2, prev.paths[prev.paths.length - 1], coff, this.stepH)
         }
-        this.color = this.upgardColor(this.color, this.colorStep);
+        this.color = this.upgardColor();
         
         this.stairsPath.push(now);
         this.drawPart(prev, now, this.color);
@@ -443,7 +451,7 @@ cc.Class({
         } else {
             bonus = cc.instantiate(this.bonusPrefab[type - 1]);
         }
-        this.node.parent.addChild(bonus);
+        this.node.parent.addChild(bonus, type);
 
         bonus.getComponent('bonus').init(this);// bonus.init(this);
         bonus.position = pos;
@@ -484,6 +492,11 @@ cc.Class({
             b.getComponent('bonus').runMove();
         }, 0.1);
 
+        if (this.goldBox.active == true) {
+            this.goldBox.active = false;
+            this.gunBonusLayout.node.active = true;
+        }
+
     },
 
     createPhyCollider(info) {
@@ -518,7 +531,7 @@ cc.Class({
 
     putGun(gunNum, bullet_cnt) {
         this.bulletCntNode.active = true;
-        this.player.getComponent('player').setGun(gunNum, bullet_cnt);
+        this.player.getComponent('player').setNewGun(gunNum, bullet_cnt);
         this.updateGunCnt(bullet_cnt);
     },
 
@@ -589,6 +602,7 @@ cc.Class({
     setCoinCount(coinCnt) {
         var ls = cc.sys.localStorage;
         this.coinScore = coinCnt;
+        this.coinLabel.string = this.coinScore;
         ls.setItem("coinCount", this.coinScore);
 
     }

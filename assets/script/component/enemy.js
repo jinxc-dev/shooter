@@ -47,7 +47,7 @@ cc.Class({
         this.R = {
             alpha: 0,
             coff: 1,
-            step: 5,
+            step: 3,
             delta: 0,
             rr: 30
         };
@@ -82,7 +82,7 @@ cc.Class({
 
     drawShooter(dt) {
         this.R.delta += dt;
-        if (this.R.delta < 0.1) {
+        if (this.R.delta < 0.05) {
             return;
         }
 
@@ -115,7 +115,7 @@ cc.Class({
         this.R = {
             alpha: 0,
             coff: 1,
-            step: 5,
+            step: 3,
             delta: 0,
             rr: 30
         };
@@ -128,8 +128,10 @@ cc.Class({
         this.node.x = w / 2 * (info.coff + 1);
         this.node.y = pos.y;
         this.node.setScale(info.coff, 1);
+        var step = pos.x + 50 * info.coff;
+        var t = Math.abs(this.node.x - step) / 50;
 
-        var s1 = cc.moveTo(0.5, pos.x + 50 * info.coff, pos.y);
+        var s1 = cc.moveTo(0.1 * t, step, pos.y);
         var se = cc.sequence(s1, cc.callFunc(this.endDisplay, this));
         this.node.runAction(se);
     },
@@ -141,6 +143,9 @@ cc.Class({
     readyShooter(playPos) {
         var vect = cc.pSub(playPos, this.node.position);
         var angle = cc.pToAngle(cc.pCompOp(vect, Math.abs));
+
+        console.log("vect:" + vect);
+        console.log("vect:" + angle);
         this.targetAngle = angle;
         this.shooterReady = true;
     },

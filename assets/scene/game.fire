@@ -6019,8 +6019,8 @@
     "_scaleY": 1,
     "_position": {
       "__type__": "cc.Vec2",
-      "x": -37.4,
-      "y": -16.8
+      "x": -49,
+      "y": -17
     },
     "_skewX": 0,
     "_skewY": 0,
@@ -6171,8 +6171,8 @@
     "_scaleY": 1,
     "_position": {
       "__type__": "cc.Vec2",
-      "x": 0.9,
-      "y": -16.8
+      "x": -11,
+      "y": -17
     },
     "_skewX": 0,
     "_skewY": 0,
@@ -6743,7 +6743,7 @@
     "cancelInnerEvents": true,
     "scrollThreshold": 0,
     "autoPageTurningThreshold": 10,
-    "pageTurningEventTiming": 0,
+    "pageTurningEventTiming": 0.1,
     "pageTurningSpeed": 0.2,
     "pageEvents": [],
     "_N$sizeMode": 1,
@@ -6817,8 +6817,14 @@
     "backBtn": {
       "__id__": 151
     },
-    "pageViewContainer": {
+    "gunPageView": {
       "__id__": 172
+    },
+    "coinCntLabel": {
+      "__id__": 159
+    },
+    "buyGunBtn": {
+      "__id__": 153
     }
   },
   {

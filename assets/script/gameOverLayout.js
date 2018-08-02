@@ -1,3 +1,5 @@
+var wexinHandler = require("wexinHandler");
+
 cc.Class({
     extends: cc.Component,
 
@@ -31,9 +33,10 @@ cc.Class({
             }
         }, this);
 
-        this.nextBtn.on('touchstart', function(){
+        this.nextBtn.on('touchstart', function(){            
             this.firstNode.active = false;
             this.nextNode.active = true;
+            wexinHandler.rankTop();
         }, this);
 
         this.backBtn.on('btnClicked', function() {
@@ -63,8 +66,9 @@ cc.Class({
 
         if (maxScore < score) {
             maxScore = score;
-            ls.setItem("maxScore", maxScore);
+            ls.setItem("maxScore", maxScore);            
             //. submit my score in wexin
+            wexinHandler.submitScore(maxScore);
         }
 
         this.gameSence.setCoinCount(this.coinCnt);

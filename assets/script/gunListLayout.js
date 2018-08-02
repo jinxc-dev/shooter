@@ -21,13 +21,13 @@ cc.Class({
     onLoad () {
         this.gamePlayerComp = this.gameMain.getComponent('bgMap').player.getComponent('player');
         this.gunItmeObjs = [];
-        this.selectedIdx = 0;
-        this.payCoinCnt = 250;
+        this.selectedIdx = 0;        
         this.coinCntLabel.string = this.payCoinCnt;
         this.nowPageIdx = 0;
         this.gunSelectedIdx = [];
         this.selectedIdx = parseInt(cc.sys.localStorage.getItem("gun_num"));
         this.payStatus = false;
+        this.payCoinCnt = 20;
 
     },
 
@@ -69,11 +69,11 @@ cc.Class({
             var idx = this.gunPageView.getCurrentPageIndex();
 
             if (idx == 0) {
-                this.payCoinCnt = 250;
+                this.payCoinCnt = 20;//250;
             } else if (idx == 1 || idx == 2) {
-                this.payCoinCnt = 500;
+                this.payCoinCnt = 50;//500;
             } else {
-                this.payCoinCnt = 750;
+                this.payCoinCnt = 75;//750;
             }
             this.coinCntLabel.string = this.payCoinCnt;
         }, this);

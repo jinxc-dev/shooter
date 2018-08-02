@@ -19,23 +19,23 @@
     "portrait": false,
     "upsideDown": false
   },
-  "packageName": "org.cocos2d.shooter",
+  "packageName": "org.cocos2d.sub-game",
   "privateKey": "",
   "qqplay": {
     "REMOTE_SERVER_ROOT": "",
     "orientation": "portrait"
   },
-  "renderMode": "0",
-  "startScene": "f8dd6bfa-f91e-4ec0-bc5d-24255ff65042",
-  "title": "shooter",
+  "renderMode": "1",
+  "startScene": "e384335b-428a-4253-ace0-ce8a8a6de3aa",
+  "title": "sub-game",
   "webOrientation": "auto",
   "wechatgame": {
     "REMOTE_SERVER_ROOT": "",
     "appid": "wx6ac3f5090a6b99c5",
-    "isSubdomain": false,
+    "isSubdomain": true,
     "orientation": "portrait",
-    "subContext": "sub-game"
+    "subContext": ""
   },
-  "xxteaKey": "e7283b80-da9a-40",
+  "xxteaKey": "4682b1da-74ca-4d",
   "zipCompressJs": true
 }

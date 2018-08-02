@@ -67,7 +67,7 @@ cc.Class({
     },
 
     start () {
-        var b = [1, 1, 1, 1, 1, 2, 1, 1];
+        var b = [0, 1, 0, 1, 0, 2, 1, 0, 1, 0];
         // var b = [2, 2, 2, 2, 2, 2, 2, 2];
         this.stopShooter();
         this.bonus.push(b[Math.floor(b.length * cc.random0To1())]);

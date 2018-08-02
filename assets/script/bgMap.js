@@ -96,6 +96,7 @@ cc.Class({
         this.gunBonusLayout.node.getComponent('gunBonusLayout').setGameScene(this);
         this.gameContinueByCoin = true;
         this.headShot = false;
+        this.noHitEnemy = 3;
     },
 
     start () {
@@ -164,6 +165,7 @@ cc.Class({
 
     startGame() {
         this.lifeValue = 1;
+        this.noHitEnemy = 3;
         this.resumeGameEvent();
         this.updateLifeDisplay();
         this.setOtherNode(true);
@@ -346,7 +348,12 @@ cc.Class({
         this.readyEnemy = false;
 
         this.enemyComp =  enemy.getComponent(comp);
-        this.enemyComp.correct = 1;
+        if (this.noHitEnemy < 0) {
+            this.enemyComp.correct = 1;
+        } else {
+            this.enemyComp.correct = -1;
+            this.noHitEnemy --;
+        }
     },
 
     shootedPlayer() {

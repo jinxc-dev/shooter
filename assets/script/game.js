@@ -1,3 +1,5 @@
+var wexinHandler = require("wexinHandler");
+
 cc.Class({
     extends: cc.Component,
 
@@ -10,7 +12,9 @@ cc.Class({
         startLayout: cc.Layout,
         mainLayout: cc.Layout,
         gunListLayout: cc.Layout,
-        gunListBtn: cc.Node
+        gunListBtn: cc.Node,
+        rankViewBtn: cc.Node,
+        rankViewLayout: cc.Layout
 
     },
 
@@ -45,6 +49,15 @@ cc.Class({
         this.gunListBtn.on('touchstart', function() {
             this.gunListLayout.node.active = true;
         }, this);
+
+        //. rank view 
+
+        this.rankViewBtn.on('touchstart', function(){
+            this.rankViewLayout.node.active = true;
+            wexinHandler.rankList();
+            this.startLayout.node.active = false;
+        }, this);
+
     },
 
     gameStorageCheck(key, value) {
@@ -53,7 +66,6 @@ cc.Class({
         if (r == "" || r == null) {
             ls.setItem(key, value);
         }
-
     },
 
 

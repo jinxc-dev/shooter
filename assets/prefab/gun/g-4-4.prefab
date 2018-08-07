@@ -103,7 +103,10 @@
     },
     "aimLen": 50,
     "power": 10,
-    "gunName": "G-4-4"
+    "gunName": "G-4-4",
+    "shotSound": {
+      "__uuid__": "a9ec977c-0579-4799-89b6-0c7daff85258"
+    }
   },
   {
     "__type__": "cc.PrefabInfo",

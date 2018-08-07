@@ -10,7 +10,11 @@ cc.Class({
         },
         aimLen: 20,
         power: 3,
-        gunName: "pistol"
+        gunName: "pistol",
+        shotSound: {
+            default: null,
+            url: cc.AudioClip
+        }
         // dealyT : 0.5
     },
 
@@ -77,6 +81,9 @@ cc.Class({
     startShoot() {
         this.readyStatus = true;
         this.bulletCnt = this.bulletBuff;
+        if (cc.sys.localStorage.getItem('soundStatus') == 'on') {
+            cc.audioEngine.play(this.shotSound, false, 1);
+        }
     },
 
     sendEndStatus() {

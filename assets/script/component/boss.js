@@ -1,3 +1,4 @@
+var commonH = require("commonHandler");
 cc.Class({
     extends: cc.Component,
 
@@ -20,11 +21,13 @@ cc.Class({
         var game = this.node.parent.getComponent('bgMap');
         var gun_power = other.node.parent.getComponent('gun').power;
         var b_head = false;
+        var ss = commonH.getScale();
         if (hh > this.node.height / 3) {
             b_head = true;
             gun_power *= 2;
         }
 
+        pos = cc.v2(pos.x / ss, pos.y);
         
         game.spawnCircle(pos, gun_power);
 
@@ -201,9 +204,10 @@ cc.Class({
     generateBonus(game) {
         var coinCnt = Math.round(game.level);// + 3;
         var node_pos = this.node.getPosition();
+        var ss = commonH.getScale();
         //. create coin
         for (var i = 0; i < coinCnt; i++) {
-            game.spawnBonus(cc.v2(node_pos.x, node_pos.y + this.node.parent.y), 1);
+            game.spawnBonus(cc.v2(node_pos.x, node_pos.y * ss + this.node.parent.y), 1);
         }
 
         var gunBonus = Math.round(cc.random0To1() + 0.2);
@@ -211,7 +215,7 @@ cc.Class({
             game.goldBox.position = node_pos;
             game.goldBox.active = true;
         } else {
-            game.spawnBonus(cc.v2(node_pos.x, node_pos.y + this.node.parent.y), 2);
+            game.spawnBonus(cc.v2(node_pos.x, node_pos.y * ss + this.node.parent.y), 2);
         }
     }
 

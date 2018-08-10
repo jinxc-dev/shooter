@@ -1,4 +1,4 @@
-
+var commonH = require("commonHandler");
 cc.Class({
     extends: cc.Component,
 
@@ -23,7 +23,7 @@ cc.Class({
     update (dt) {
         var x = this.node.x;
         var boxs = this.node.getBoundingBoxToWorld();
-        if (boxs.x < 0 || boxs.x > 640 ) {
+        if (boxs.x < 0 || boxs.x > 640 * commonH.getScale() ) {
             this.despawn();
         }
     },

@@ -20,6 +20,7 @@ cc.Class({
         gunListBtn: cc.Node,
         friendBtn: cc.Node,
         wexinBtn: cc.Node,
+        alertDlg: cc.Node
     },
 
     onLoad() {
@@ -60,6 +61,7 @@ cc.Class({
 
         this.gunListBtn.on('touchstart', function() {
             this.gunListLayout.node.active = true;
+            this.soundBtn.active = false;
         }, this);
 
         //. rank view 
@@ -95,6 +97,22 @@ cc.Class({
             }
         }, this);
 
+        //. alert
+        this.node.on('show-alert', function(event) {
+            var str = event.getUserData();
+            this.alertDlg.getComponent('alert').showAlert(str);
+        }, this);
+
+        this.friendBtn.on('touchstart', function(event) {
+            this.alertDlg.getComponent('alert').showAlert("它正在开发中。");
+        }, this);
+
+        this.node.on('showRankView', function() {
+            this.rankViewLayout.node.active = true;
+            wexinHandler.rankList();
+            this.startLayout.node.active = false;
+        }, this);
+
     },
 
     gameStorageCheck(key, value) {
@@ -121,11 +139,8 @@ cc.Class({
     checkRectBtns() {
         var screenSize = cc.sys.windowPixelResolution;
         var rY = screenSize.width / screenSize.height * 1.775;
-        this.friendBtn.scaleY = rY;
-        this.rankViewBtn.scaleY = rY;
-        this.shareBtn.scaleY = rY;
-        this.wexinBtn.scaleY = rY;
-        this.gunListBtn.scaleY = rY;
+
+        console.log('canvas:' + this.node.width);
     }
 
 

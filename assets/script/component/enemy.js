@@ -1,3 +1,4 @@
+var commonH = require("commonHandler");
 cc.Class({
     extends: cc.Component,
 
@@ -20,6 +21,7 @@ cc.Class({
         var b_head = false;
         var gun_power = other.node.parent.getComponent('gun').power;
         var game = this.node.parent.getComponent('bgMap');
+        var ss = commonH.getScale();
         //. head shoot
         if (hh > this.node.height / 3) {
             b_head = true;
@@ -27,6 +29,8 @@ cc.Class({
         }
 
         other.node.removeFromParent();
+
+        pos = cc.v2(pos.x / ss, pos.y);
         
         game.spawnCircle(pos, gun_power);
         game.updateScore(b_head);
@@ -36,7 +40,7 @@ cc.Class({
 
         for (var i = 0; i < this.bonus.length; i++) {
             var b = this.bonus[i];
-            game.spawnBonus(cc.v2(node_pos.x, node_pos.y + p_y), b);
+            game.spawnBonus(cc.v2(node_pos.x, node_pos.y * ss + p_y), b);
         }
 
         this.node.removeFromParent();

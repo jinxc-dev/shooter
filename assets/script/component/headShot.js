@@ -27,7 +27,7 @@ cc.Class({
         if (status) {
             this.headShot = true;
             this.headCnt ++;
-            this.headCntLabel.string = "爆头X" + this.headCnt;
+            this.headCntLabel.string = "爆头x" + this.headCnt;
             this.runEffect();
         } else {
             this.init();

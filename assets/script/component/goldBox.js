@@ -1,3 +1,4 @@
+var commonH = require("commonHandler");
 cc.Class({
     extends: cc.Component,
 
@@ -8,6 +9,7 @@ cc.Class({
 
     onLoad () {
         this.game;
+        this.node.scaleY = 1 / commonH.getScale();
     },
 
     start () {
@@ -16,6 +18,7 @@ cc.Class({
 
     init(game) {
         this.game = game;
+        
     },
 
     runMove() {

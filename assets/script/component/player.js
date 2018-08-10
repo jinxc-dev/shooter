@@ -1,3 +1,4 @@
+var commonH = require("commonHandler");
 cc.Class({
     extends: cc.Component,
 
@@ -23,6 +24,8 @@ cc.Class({
         var pos = other.world.position;
         var node_pos = self.node.getPosition();
         var p_y = self.node.parent.y;
+        var ss = commonH.getScale();
+        pos = cc.v2(pos.x / ss, pos.y);
 
         if (other.node.parent.parent.name != 'player') {
             this.game.deadLife();

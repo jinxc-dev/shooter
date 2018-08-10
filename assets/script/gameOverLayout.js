@@ -11,7 +11,9 @@ cc.Class({
         nextNode: cc.Node,
         maxScoreLabel: cc.Label,
         gameScoreLabel: cc.Label,
-        startLayout: cc.Layout
+        startLayout: cc.Layout,
+        fightBtn: cc.Node,
+        rankViewBtn: cc.Node
     },
 
     // LIFE-CYCLE CALLBACKS:
@@ -46,6 +48,21 @@ cc.Class({
             this.gameSence.readyStartGame();
             this.startLayout.node.active = true;
         }, this);
+
+        this.rankViewBtn.on('touchend', function() {
+            this.node.active = false;
+            this.gameSence.exitGame();
+            this.gameSence.readyStartGame();
+            var event = new cc.Event.EventCustom("showRankView", true);
+            this.node.dispatchEvent(event);            
+        }, this);
+
+        this.fightBtn.on('btnClicked', function() {
+            if (window.wx != undefined) {
+                console.log('share function');
+                window.wx.shareAppMessage({title: 'Shooter', imageUrl: 'https://wx1.sinaimg.cn/mw1024/59a47337ly1frj7nve36uj20kd0cqamo.jpg', query: "from=group"});
+            }
+        }, this);
     },
 
     onEnable() {
@@ -66,7 +83,7 @@ cc.Class({
 
         if (maxScore < score) {
             maxScore = score;
-            ls.setItem("maxScore", maxScore);            
+            ls.setItem("maxScore", maxScore);
             //. submit my score in wexin
             wexinHandler.submitScore(maxScore);
         }

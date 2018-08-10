@@ -30,6 +30,10 @@ cc.Class({
                 var event = new cc.Event.EventCustom("selectGunItem", true);
                 event.setUserData(this.idx);
                 this.node.dispatchEvent(event);
+            } else {
+                var event = new cc.Event.EventCustom("show-alert", true);
+                event.setUserData("还未拥有此武器");
+                this.node.dispatchEvent(event);
             }
         }, this);
 

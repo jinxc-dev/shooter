@@ -33,13 +33,13 @@ cc.Class({
 
         var game = this.node.parent.getComponent('game');
 
-        this.closeBtn.on('btnClicked', function(){
+        this.closeBtn.on('touchend', function(){
             game.startLayout.node.active = true;
             this.node.active = false;
             
         }, this);
 
-        this.startBtn.on('btnClicked', function() {
+        this.startBtn.on('touchend', function() {
             game.bgNode.getComponent('bgMap').startGame();
             this.node.active = false;
         }, this);

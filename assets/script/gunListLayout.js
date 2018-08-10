@@ -103,6 +103,7 @@ cc.Class({
         this.gameMain.y = 0;
         this.gamePlayerComp.destroySelectGunReady();
         this.startGameLayout.node.active = true;
+        cc.find('Main/sound').active = true;
     },
 
     //. 총의 목록을 구성한다.

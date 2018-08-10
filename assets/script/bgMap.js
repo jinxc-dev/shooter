@@ -1,4 +1,4 @@
-
+var commonH = require("commonHandler");
 cc.Class({
     extends: cc.Component,
 
@@ -64,7 +64,8 @@ cc.Class({
         gameOverLayout: cc.Layout,
         headShotNode: cc.Node,
         gunBonusLayout: cc.Layout,
-        goldBox: cc.Node
+        goldBox: cc.Node,
+        guideLabel: cc.Label
  
     },
 
@@ -97,6 +98,13 @@ cc.Class({
         this.gameContinueByCoin = true;
         this.headShot = false;
         this.noHitEnemy = 3;
+
+        this.scaleN = commonH.getScale();
+        console.log('calc:' + this.scaleN);
+        this.startPos = cc.v2(50, this.startPos.y / this.scaleN);
+        this.guideLabel.node.setPositionY(this.startPos.y - 50);
+
+
     },
 
     start () {
@@ -141,6 +149,8 @@ cc.Class({
         this.colorOptical = 0;
         this.color = cc.color(0, 0, 0, 0);
         this.player.active = true;
+        this.gameScore = 0;
+        this.gameScoreLabel.string = this.pad(this.gameScore, 5);
         this.getCoinCount();  
         this.createMapAndPlayer();
         this.player.getComponent('player').start();
@@ -173,7 +183,6 @@ cc.Class({
         this.gameScore = 0;
         this.initGame();
         this.gameLevelLabel.string = "level " + this.level;
-        
         //. continue game by coin
         
     },
@@ -197,6 +206,7 @@ cc.Class({
             this.bossHealthLayout.active = status;
         this.gameScoreLabel.node.active = status;
         this.bulletCntNode.active = status;
+        this.guideLabel.node.active = status;
 
     },
 
@@ -373,7 +383,7 @@ cc.Class({
 
     removeAnim: function (pos, type) {
         var coff = 1;
-        if (pos.x < this.node.width / 2) {
+        if (pos.x < this.node.width * this.scaleN / 2) {
             coff = -1;
         }
         var anim = this.spawnKilledAnim(type);
@@ -442,7 +452,7 @@ cc.Class({
     upgardMap() {
         var p = this.stairsPath.shift();
         var w_h = p.paths[0].y - this.stairsPath[0].paths[0].y;
-        var move = cc.moveBy(0.3, 0, w_h);
+        var move = cc.moveBy(0.3, 0, w_h * this.scaleN);
         this.node.runAction(move);
 
         this.addMap();
@@ -529,6 +539,7 @@ cc.Class({
         this.createMapAndPlayer();
         this.initGame();
         this.gameLevelLabel.string = "level " + this.level;
+        // this.guideLabel.node.active = false;
     },
 
     updateGameLevel() {

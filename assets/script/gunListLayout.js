@@ -22,12 +22,12 @@ cc.Class({
         this.gamePlayerComp = this.gameMain.getComponent('bgMap').player.getComponent('player');
         this.gunItmeObjs = [];
         this.selectedIdx = 0;        
+        this.coinCntLabel.string = this.payCoinCnt;
         this.nowPageIdx = 0;
         this.gunSelectedIdx = [];
         this.selectedIdx = parseInt(cc.sys.localStorage.getItem("gun_num"));
         this.payStatus = false;
         this.payCoinCnt = 20;
-        this.coinCntLabel.string = this.payCoinCnt;
 
     },
 

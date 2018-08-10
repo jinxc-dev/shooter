@@ -11,27 +11,23 @@ cc.Class({
         startBtn: cc.Node,
         startLayout: cc.Layout,
         mainLayout: cc.Layout,
-        gunListLayout: cc.Layout,        
-        rankViewLayout: cc.Layout,
-        soundBtn: cc.Node,
-
-        rankViewBtn: cc.Node,
-        shareBtn: cc.Node,
+        gunListLayout: cc.Layout,
         gunListBtn: cc.Node,
+<<<<<<< HEAD
         friendBtn: cc.Node,
         wexinBtn: cc.Node,
         alertDlg: cc.Node
+=======
+        rankViewBtn: cc.Node,
+        rankViewLayout: cc.Layout
+
+>>>>>>> parent of a1e8edf... v0.9.4
     },
 
     onLoad() {
         cc.director.getPhysicsManager().enabled = true;
         // cc.director.getPhysicsManager().gravity = cc.v2 (0, -320);
         cc.director.getCollisionManager().enabled = true;
-
-        this.soundOnTexture = cc.textureCache.addImage(cc.url.raw("resources/img/sound.png"));
-        this.soundOffTexture = cc.textureCache.addImage(cc.url.raw("resources/img/mute.png"));
-        this.isloadSoundOn = true;
-        this.isSound = true;
 
         this.gameColor = [
             cc.color(73, 120, 228, 255),
@@ -40,14 +36,11 @@ cc.Class({
 
         this.gameStorageCheck('gun_num', 0);
         this.gameStorageCheck('coinCount', 0);
-        this.gameStorageCheck('soundStatus', "on");
-
         var vv = [1];
         for (var i = 0; i < 22; i++) 
             vv.push(0);
         this.gameStorageCheck('enableGunList', vv);
 
-        this.checkRectBtns();
     },
 
     start () {
@@ -72,6 +65,7 @@ cc.Class({
             this.startLayout.node.active = false;
         }, this);
 
+<<<<<<< HEAD
         this.shareBtn.on('touchstart', function() {
             if (window.wx != undefined) {
                 console.log('share function');
@@ -113,6 +107,8 @@ cc.Class({
             this.startLayout.node.active = false;
         }, this);
 
+=======
+>>>>>>> parent of a1e8edf... v0.9.4
     },
 
     gameStorageCheck(key, value) {
@@ -123,6 +119,7 @@ cc.Class({
         }
     },
 
+<<<<<<< HEAD
     soundStatusCheck() {
         var s_status = cc.sys.localStorage.getItem('soundStatus');
         this.isSound = (s_status == "on") ? true: false;          
@@ -143,6 +140,8 @@ cc.Class({
         console.log('canvas:' + this.node.width);
     }
 
+=======
+>>>>>>> parent of a1e8edf... v0.9.4
 
 
 });

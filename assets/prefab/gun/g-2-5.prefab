@@ -103,7 +103,10 @@
     },
     "aimLen": 50,
     "power": 3,
-    "gunName": "G-2-5"
+    "gunName": "G-2-5",
+    "shotSound": {
+      "__uuid__": "97b91fc7-c364-4e87-8e72-f33d953447b0"
+    }
   },
   {
     "__type__": "cc.PrefabInfo",

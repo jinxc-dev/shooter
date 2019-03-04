@@ -13,7 +13,7 @@ cc.Class({
         gameScoreLabel: cc.Label,
         startLayout: cc.Layout,
         fightBtn: cc.Node,
-        rankViewBtn: cc.Node
+        rankViewBtn: cc.Node,
     },
 
     // LIFE-CYCLE CALLBACKS:
@@ -69,6 +69,11 @@ cc.Class({
         var b_continue = this.gameSence.gameContinueByCoin;
         this.firstNode.active = b_continue;
         this.nextNode.active = !b_continue;
+        cc.find('/Main/sound').pauseSystemEvents(true);
+    },
+
+    onDisable() {
+        cc.find('/Main/sound').resumeSystemEvents(true);
     },
 
     setGameInfo(score, coin_cnt) {

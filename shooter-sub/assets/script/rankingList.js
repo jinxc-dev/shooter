@@ -167,7 +167,7 @@ cc.Class({
             var playerInfo = data[i];
             var item = cc.instantiate(this.rankItemPrefab);
             this.content.addChild(item);
-            item.getComponent('rankItem').init(i, playerInfo);
+            item.getComponent('rankItem').init(i, playerInfo, true);
             // 
             item.setPositionY(-nStep * nH + startY);
             nStep ++;
@@ -178,7 +178,7 @@ cc.Class({
         this.myContent.removeAllChildren();
         var item = cc.instantiate(this.rankItemPrefab);
         this.myContent.addChild(item);
-        item.getComponent('rankItem').init(0, data);
+        item.getComponent('rankItem').init(0, data, false);
         // item.getComponent(cc.Sprite).active = false;
     },
 
@@ -190,7 +190,7 @@ cc.Class({
             console.log(playerInfo);
             var item = cc.instantiate(this.rankItemTopPrefab);
             this.topRankContent.addChild(item);
-            item.getComponent('rankItem').init(i, playerInfo);
+            item.getComponent('rankItem').init(i, playerInfo, false);
 
             item.x = (i + 0.5) * item.width;
         }        

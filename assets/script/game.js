@@ -37,7 +37,8 @@ cc.Class({
             cc.color(73, 120, 228, 255),
             cc.color(219, 119, 131, 255)
         ];
-
+        // cc.sys.localStorage.setItem("coinCount", 1000);
+        // cc.sys.localStorage.setItem('enableGunList', 0);
         this.gameStorageCheck('gun_num', 0);
         this.gameStorageCheck('coinCount', 0);
         this.gameStorageCheck('soundStatus', "on");

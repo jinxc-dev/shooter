@@ -84,10 +84,14 @@ cc.Class({
                 
             var coinCnt = parseInt(cc.sys.localStorage.getItem("coinCount"));
             if (coinCnt < this.payCoinCnt) return;
+            
             var payStatus = this.startSelectGun();
+            
             if (payStatus) {
                 this.payStatus = true;
-                this.gameMain.getComponent('bgMap').setCoinCount(this.payCoinCnt - coinCnt);
+                console.log('PAY GUN:' + this.payCoinCnt);
+                console.log('PAY GUN coin:' + coinCnt);
+                this.gameMain.getComponent('bgMap').setCoinCount(coinCnt - this.payCoinCnt);
             }
         }, this);
     },
@@ -167,7 +171,8 @@ cc.Class({
         var idx = this.gunPageView.getCurrentPageIndex();
         for (var i = startIdx[idx]; i < startIdx[idx] + gunCnt[idx]; i++) {
             this.gunItmeObjs[i].getComponent('gunItem').readySelectGun();
-            this.existGun = true;
+            existGun = true;
+            
         }
         return existGun;
     },

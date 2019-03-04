@@ -43,7 +43,7 @@ cc.Class({
     },
 
     setInfoLabel(name, buffer) {
-        this.gunBufferLabel.string = ", 可以亲" + buffer + "发!";
+        this.gunBufferLabel.string = ", 可以来" + buffer + "发!";
         this.gunNameLabel.string = name;
     },
 

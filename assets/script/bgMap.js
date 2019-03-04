@@ -615,9 +615,11 @@ cc.Class({
             score = 0;
         }
         this.coinScore = parseInt(score);
+        if (this.coinScore < 0) this.coinScore = 0;
         this.coinLabel.string = this.coinScore;//this.pad(this.coinScore, 3);
     },
     setCoinCount(coinCnt) {
+        console.log('PAY-COIN:' + coinCnt);
         var ls = cc.sys.localStorage;
         this.coinScore = coinCnt;
         this.coinLabel.string = this.coinScore;

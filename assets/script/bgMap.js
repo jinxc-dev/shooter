@@ -102,7 +102,7 @@ cc.Class({
         this.scaleN = commonH.getScale();
         console.log('calc:' + this.scaleN);
         this.startPos = cc.v2(50, this.startPos.y / this.scaleN);
-        this.guideLabel.node.setPositionY(this.startPos.y - 50);
+        this.guideLabel.node.y = this.startPos.y - 50;
 
 
     },
@@ -197,7 +197,7 @@ cc.Class({
         this.deadBoss = false;
         this.gameScore = 0;
         this.displayEnemyType = 'enemy';
-        this.node.removeChildByTag(2001);
+        // this.node.removeChildByTag(2001);
     },
 
     setOtherNode(status) {
@@ -226,8 +226,8 @@ cc.Class({
         this.bossHealthLayout.active = false;
         this.goldBox.active = false;
         this.deadBoss = false;        
-        this.hasEnemy = false;
-        this.spawnEnemy();
+        this.hasEnemy = false;        
+        this.spawnEnemy();        
         this.createPhyCollider(this.stairsPath[0]);
     },
 
@@ -308,7 +308,7 @@ cc.Class({
     },
 
     generatePath(maxN, minN, pos, coff, step) {
-        var n = Math.round(cc.random0To1() * (maxN - minN)) + minN;
+        var n = Math.round(Math.random() * (maxN - minN)) + minN;
         var p = [];
         for (var i = 0; i < n; i++) {
             var x = coff * (i * step + this.startPos.x) + this.node.width / 2;
@@ -350,7 +350,7 @@ cc.Class({
             comp = 'boss';
         }
         this.displayEnemyType = comp;
-        this.node.addChild(enemy, 1, 2001);
+        this.node.addChild(enemy, 1, "Enemy");
         enemy.getComponent(comp).display(this.stairsPath[0]);
         //. set boss health
         enemy.getComponent(comp).setHealth(this.level * 2);

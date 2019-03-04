@@ -23,11 +23,11 @@ cc.Class({
             cc.color(80, 137, 197),
             cc.color(97, 105, 113),
         ];
-        var c = Math.floor(color.length * cc.random0To1());
+        var c = Math.floor(color.length * Math.random());
 
         this.circleImg.color = color[c];
         this.circleImg.setScale(this.initScale, this.initScale);
-        var z = cc.random0To1() * (1 - 0.8) + 0.8;
+        var z = Math.random() * (1 - 0.8) + 0.8;
         var s1 = cc.scaleTo(.1, z);
         var s2 = cc.fadeOut(0.1);
         var func = cc.callFunc(this.stopFunc, this);

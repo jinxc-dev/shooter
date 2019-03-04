@@ -63,9 +63,17 @@ cc.Class({
             'enemy1.png', 'enemy2.png', 'enemy3.png'
         ];
        
-        var idx = Math.floor(files.length * cc.random0To1());
-        var texture = cc.textureCache.addImage(cc.url.raw("resources/img/enemy/" + files[idx]));
-        this.node.getComponent(cc.Sprite).spriteFrame = new cc.SpriteFrame(texture);
+        var idx = Math.floor(files.length * Math.random());
+
+        var _this = this;
+        var path = 'img/enemy/' + files[idx];
+        cc.loader.loadRes(path, cc.SpriteFrame, function(err, sprite) {
+            if (err) {
+                return;
+            }
+            _this.node.getComponent(cc.Sprite).spriteFrame = sprite
+        });
+
         this.gun;
         this.setGun();
     },
@@ -74,7 +82,7 @@ cc.Class({
         var b = [0, 1, 0, 1, 0, 2, 1, 0, 1, 0];
         // var b = [2, 2, 2, 2, 2, 2, 2, 2];
         this.stopShooter();
-        this.bonus.push(b[Math.floor(b.length * cc.random0To1())]);
+        this.bonus.push(b[Math.floor(b.length * Math.random())]);
         this.targetAngle = 0;
     },
 
@@ -145,11 +153,12 @@ cc.Class({
     },
 
     readyShooter(playPos) {
-        var vect = cc.pSub(playPos, this.node.position);
-        var angle = cc.pToAngle(cc.pCompOp(vect, Math.abs));
+        var vect = playPos.sub(this.node.position);
+        // var angle = cc.pToAngle(cc.pCompOp(vect, Math.abs));
+        vect.x = Math.abs(vect.x);
+        vect.y = Math.abs(vect.y);
+        var angle = vect.angle(cc.v2(1, 0));
 
-        console.log("vect:" + vect);
-        console.log("vect:" + angle);
         this.targetAngle = angle;
         this.shooterReady = true;
     },

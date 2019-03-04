@@ -50,8 +50,8 @@ cc.Class({
     generateGun() {
         var guns = this.game.player.getComponent('player').gunPrefab;
         var name = "";        
-        this.gunNum = Math.round((guns.length - 1) * cc.random0To1());
-        this.bufferCnt = Math.floor( 5 * cc.random0To1()) +5;
+        this.gunNum = Math.round((guns.length - 1) * Math.random());
+        this.bufferCnt = Math.floor( 5 * Math.random()) +5;
 
         this.gunContainer.removeAllChildren();
         var g = cc.instantiate(guns[this.gunNum]);

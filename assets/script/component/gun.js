@@ -11,10 +11,7 @@ cc.Class({
         aimLen: 20,
         power: 3,
         gunName: "pistol",
-        shotSound: {
-            default: null,
-            url: cc.AudioClip
-        }
+        shotSound: cc.AudioClip
         // dealyT : 0.5
     },
 

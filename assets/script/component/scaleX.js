@@ -9,6 +9,7 @@ cc.Class({
     onLoad () {
         var screenSize = cc.sys.windowPixelResolution;
         var rX = screenSize.width / screenSize.height / 0.5633;
+        rX = 1;
         this.node.scaleX = rX;
     },
 

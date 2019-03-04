@@ -66,9 +66,15 @@ cc.Class({
         var files = [
             'boss1.png', 'boss2.png', 'boss3.png'
         ];
-        var idx = Math.floor(files.length * cc.random0To1());
-        var texture = cc.textureCache.addImage(cc.url.raw("resources/img/boss/" + files[idx]));
-        this.node.getComponent(cc.Sprite).spriteFrame = new cc.SpriteFrame(texture);
+        var idx = Math.floor(files.length * Math.random());
+        var _this = this;
+        var path = 'img/boss/' + files[idx];
+        cc.loader.loadRes(path, cc.SpriteFrame, function(err, sprite) {
+            if (err) {
+                return;
+            }
+            _this.node.getComponent(cc.Sprite).spriteFrame = sprite
+        });
         this.gun;
         this.setGun();
         this.initHealth = 0;
@@ -78,7 +84,7 @@ cc.Class({
     start () {
         var b = [0, 0, 1, 0, 1, 2, 0, 0];
         this.stopShooter();
-        this.bonus.push(b[Math.floor(b.length * cc.random0To1())]);
+        this.bonus.push(b[Math.floor(b.length * Math.random())]);
     },
 
     update (dt) {
@@ -184,8 +190,11 @@ cc.Class({
     },
 
     readyShooter(playPos) {
-        var vect = cc.pSub(playPos, this.node.position);
-        var angle = cc.pToAngle(cc.pCompOp(vect, Math.abs));
+        var vect = playPos.sub(this.node.position);
+        // var angle = cc.pToAngle(cc.pCompOp(vect, Math.abs));
+        vect.x = Math.abs(vect.x);
+        vect.y = Math.abs(vect.y);
+        var angle = vect.angle(cc.v2(1, 0));
         this.targetAngle = angle;
         this.shooterReady = true;
     },
@@ -210,7 +219,7 @@ cc.Class({
             game.spawnBonus(cc.v2(node_pos.x, node_pos.y * ss + this.node.parent.y), 1);
         }
 
-        var gunBonus = Math.round(cc.random0To1() + 0.2);
+        var gunBonus = Math.round(Math.random() + 0.2);
         if (gunBonus != 0) {
             game.goldBox.position = node_pos;
             game.goldBox.active = true;

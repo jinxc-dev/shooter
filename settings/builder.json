@@ -25,7 +25,6 @@
     "REMOTE_SERVER_ROOT": "",
     "orientation": "portrait"
   },
-  "renderMode": "0",
   "startScene": "f8dd6bfa-f91e-4ec0-bc5d-24255ff65042",
   "title": "shooter",
   "webOrientation": "auto",
@@ -37,5 +36,13 @@
     "subContext": "sub-game"
   },
   "xxteaKey": "e7283b80-da9a-40",
-  "zipCompressJs": true
+  "zipCompressJs": true,
+  "android-instant": {
+    "REMOTE_SERVER_ROOT": "",
+    "pathPattern": "",
+    "scheme": "https",
+    "host": "",
+    "skipRecord": false,
+    "recordPath": ""
+  }
 }

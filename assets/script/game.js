@@ -20,7 +20,9 @@ cc.Class({
         gunListBtn: cc.Node,
         friendBtn: cc.Node,
         wexinBtn: cc.Node,
-        alertDlg: cc.Node
+        alertDlg: cc.Node,
+        soundOnTexture: cc.SpriteFrame,
+        soundOffTexture: cc.SpriteFrame
     },
 
     onLoad() {
@@ -28,8 +30,6 @@ cc.Class({
         // cc.director.getPhysicsManager().gravity = cc.v2 (0, -320);
         cc.director.getCollisionManager().enabled = true;
 
-        this.soundOnTexture = cc.textureCache.addImage(cc.url.raw("resources/img/sound.png"));
-        this.soundOffTexture = cc.textureCache.addImage(cc.url.raw("resources/img/mute.png"));
         this.isloadSoundOn = true;
         this.isSound = true;
 
@@ -39,6 +39,7 @@ cc.Class({
         ];
         // cc.sys.localStorage.setItem("coinCount", 1000);
         // cc.sys.localStorage.setItem('enableGunList', 0);
+        this.gameStorageCheck('maxScore', 0);
         this.gameStorageCheck('gun_num', 0);
         this.gameStorageCheck('coinCount', 0);
         this.gameStorageCheck('soundStatus', "on");
@@ -52,7 +53,7 @@ cc.Class({
     },
 
     start () {
-        var n = Math.round(cc.random0To1() * (this.gameColor.length - 1));
+        var n = Math.round(Math.random() * (this.gameColor.length - 1));
         this.mainLayout.node.color = this.gameColor[n];
         this.startBtn.on("touchstart", function(){
             console.log('start Game');
@@ -89,11 +90,11 @@ cc.Class({
             }
             if (this.isSound) {
                 cc.sys.localStorage.setItem("soundStatus", "on");
-                this.soundBtn.getComponent(cc.Sprite).spriteFrame = new cc.SpriteFrame(this.soundOnTexture);
+                this.soundBtn.getComponent(cc.Sprite).spriteFrame = this.soundOnTexture;
                 cc.audioEngine.resumeAll();
             } else {
                 cc.sys.localStorage.setItem("soundStatus", "off");
-                this.soundBtn.getComponent(cc.Sprite).spriteFrame = new cc.SpriteFrame(this.soundOffTexture);
+                this.soundBtn.getComponent(cc.Sprite).spriteFrame = this.soundOffTexture;
                 cc.audioEngine.pauseAll();
             }
         }, this);

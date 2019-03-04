@@ -150,9 +150,9 @@ cc.Class({
     //. 우연적으로 배경을 바꾸어준다.
     drawBGRandon() {
         var t = 100;
-        var c1 = Math.ceil(cc.random0To1() * t + t);
-        var c2 = Math.ceil(cc.random0To1() * t + t);
-        var c3 = Math.ceil(cc.random0To1() * t + t);
+        var c1 = Math.ceil(Math.random() * t + t);
+        var c2 = Math.ceil(Math.random() * t + t);
+        var c3 = Math.ceil(Math.random() * t + t);
 
         var g = this.bgGraphics;
         var x = -80;
